@@ -2,7 +2,7 @@
 
 ###  Blockchain sin floro, contratos sin corrupción
 
-[Escribe aquí un párrafo explicativo detallado sobre qué es el proyecto, qué problemas resuelve, qué tecnologías o redes principales utiliza (por ejemplo: blockchains, frameworks, modelos de IA) y bajo qué contexto se desarrolló (por ejemplo: Hackathon X, un curso, desarrollo propio, etc.)].
+ZasPe es un agente inteligente diseñado para automatizar el análisis de informes de auditoría y documentos de control institucional mediante inteligencia artificial, procesamiento de lenguaje natural (PLN) y tecnologías blockchain. El sistema es capaz de interpretar documentos en lenguaje natural, identificar la entidad evaluada, detectar la función institucional correspondiente, extraer hallazgos clave (condición, criterio, causa y efecto), generar resúmenes ejecutivos y formular recomendaciones de manera automática.
 
 ## 🔗 Enlaces Oficiales
 
