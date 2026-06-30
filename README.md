@@ -21,10 +21,6 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 | 📘 Facebook | [TuPágina]([URL_FACEBOOK]) |
 | 💼 LinkedIn | https://www.linkedin.com/in/zaspe-agente-18651641a/
 
-## 💡 Principio / Filosofía
-
-> "[Coloca aquí una frase potente o lema que resuma la esencia de cómo opera tu sistema. Ejemplo: La IA asesora. El ciudadano supervisa. El blockchain firma.]"
-
 ## 💻 Stack
 
 | Capas | Tecnología |
