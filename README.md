@@ -9,7 +9,7 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 | Recurso | Enlace |
 | :--- | :--- |
 | 🎬 Video de presentación | [Ver Video]([URL_DEL_VIDEO]) |
-| 📄 Whitepaper / Documentación | [[Nombre_Archivo.md] o Enlace]([RUTA_O_LINK_AL_DOCUMENTO]) |
+| 📄 Whitepaper / Documentación | https://docs.google.com/document/d/1sQeLdCCJxHRhXGRY1SduTU3X7T8MJRVidBhCJS_latA/edit?usp=sharing | [PDF]([https://docs.google.com/document/d/1sQeLdCCJxHRhXGRY1SduTU3X7T8MJRVidBhCJS_latA/edit?usp=sharing])
 | 📁 Carpeta de recursos (Drive/OneDrive) | [Acceder a la Carpeta]([URL_DE_LA_CARPETA]) |
 
 ## 📱 Síguenos / Contacto
