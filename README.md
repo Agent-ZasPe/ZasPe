@@ -25,7 +25,7 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 
 > "[Coloca aquí una frase potente o lema que resuma la esencia de cómo opera tu sistema. Ejemplo: La IA asesora. El ciudadano supervisa. El blockchain firma.]"
 
-## 🏗️ Pilares / Capas del Proyecto
+## 💻 Stack
 
 * **[Componente o Capa 1]** — [Descripción de lo que hace esta capa, su función principal y qué herramientas o conceptos técnicos maneja].
 * **[Componente o Capa 2]** — [Descripción de lo que hace esta capa, su función principal y qué herramientas o conceptos técnicos maneja].
