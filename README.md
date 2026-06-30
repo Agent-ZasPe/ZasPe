@@ -27,9 +27,19 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 
 ## 💻 Stack
 
-* **[Componente o Capa 1]** — [Descripción de lo que hace esta capa, su función principal y qué herramientas o conceptos técnicos maneja].
-* **[Componente o Capa 2]** — [Descripción de lo que hace esta capa, su función principal y qué herramientas o conceptos técnicos maneja].
-* **[Componente o Capa 3]** — [Descripción de lo que hace esta capa, su función principal y qué herramientas o conceptos técnicos maneja].
+| Capas | Tecnología |
+| :--- | :--- |
+| **Inteligencia Artificial** | Modelo OpenAI |
+| **Automatización de Workflows** | n8n |
+| **Backend** | Node.js |
+| **Framework de API** | Express.js |
+| **Red Blockchain** | Syscoin zkSYS Testnet |
+| **Hash Criptográfico** | SHA-256 |
+| **Librería Blockchain** | Ethers.js |
+| **Generación de PDF** | HTML to PDF |
+| **Despliegue (Deployment)** | Vercel |
+| **Plataforma de Mensajería** | Telegram Bot API |
+| **Control de Versiones** | Git & GitHub |
 
 ## 📂 Arquitectura del Monorepo
 
