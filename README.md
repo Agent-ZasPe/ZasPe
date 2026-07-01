@@ -10,7 +10,7 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 | :--- | :--- |
 | 🎬 Video de presentación | [Ver Video]([URL_DEL_VIDEO]) |
 | 📄 Whitepaper / Documentación | https://docs.google.com/document/d/1sQeLdCCJxHRhXGRY1SduTU3X7T8MJRVidBhCJS_latA/edit?usp=sharing | [PDF]([https://docs.google.com/document/d/1sQeLdCCJxHRhXGRY1SduTU3X7T8MJRVidBhCJS_latA/edit?usp=sharing])
-| 📁 Carpeta de recursos (Drive/OneDrive) | [Acceder a la Carpeta]([URL_DE_LA_CARPETA]) |
+
 
 ## 📱 Síguenos / Contacto
 
@@ -18,7 +18,7 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 | :--- | :--- |
 | 🎥 YouTube | https://www.youtube.com/@ZasPeAgente
 | 🐦 X / Twitter | https://x.com/ZasPeAgente
-| 📘 Facebook | [TuPágina]([URL_FACEBOOK]) |
+| 📘 Facebook | [ZasPe Agente]([https://www.facebook.com/profile.php?id=61591502612604]) |
 | 💼 LinkedIn | https://www.linkedin.com/in/zaspe-agente-18651641a/
 
 ## 💻 Stack
@@ -51,8 +51,4 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 
 📦 zaspe-agent
     ├── workflow.json
-    ├── prompts/
-    ├── docs/
-    ├── README.md
-    ├── LICENSE
-    └── .gitignore
+    ├── system_prompt.txt
