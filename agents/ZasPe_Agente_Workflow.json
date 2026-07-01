@@ -1,0 +1,1368 @@
+{
+  "name": "Workflow 1: Archivo",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -4112,
+        208
+      ],
+      "id": "9f2ce60a-4557-4b34-91d7-76fff4b48ffc",
+      "name": "Telegram Trigger",
+      "webhookId": "9ec4af30-1cab-4667-8c44-73d01a87d387",
+      "credentials": {
+        "telegramApi": {
+          "id": "MjQufvgGvprLYwny",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "=📄 Archivo recibido correctamente.\n\nAhora selecciona la función que deseas analizar:",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "[CSV] Función 1: Análisis de Riesgo y Cruce de Datos",
+                    "additionalFields": {
+                      "callback_data": "funcion_1"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "[PDF] Función 2: Control de Calidad y Consistencia de Informes",
+                    "additionalFields": {
+                      "callback_data": "funcion_2"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "[PDF] Función 3: Triaje e Investigación de Denuncias Ciudadanas",
+                    "additionalFields": {
+                      "callback_data": "funcion_3"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "[PDF] Función 4: Resumen Ejecutivo de Expedientes Complejos",
+                    "additionalFields": {
+                      "callback_data": "funcion_4"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2800,
+        96
+      ],
+      "id": "2809ec0e-21ab-43a0-aacd-6f3f54295b75",
+      "name": "Send a text message",
+      "webhookId": "08aa5be0-4542-4ff4-8ce2-94d18326b4fe",
+      "credentials": {
+        "telegramApi": {
+          "id": "MjQufvgGvprLYwny",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7f54fff2-877f-4af7-93e3-931c8cb53cae",
+              "leftValue": "={{ $json.message.document.file_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3904,
+        208
+      ],
+      "id": "8df9e366-8a08-48be-a6a3-0fbb30b214d8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae540d1c-637c-44ab-871c-d82b7d56f0a8",
+              "name": "chat_id",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "9347511e-595f-4608-bde3-6f77c4be859c",
+              "name": "file_id",
+              "value": "={{ $json.message.document.file_id }}",
+              "type": "string"
+            },
+            {
+              "id": "7f35286a-4805-432d-9257-3e6d862b3cc9",
+              "name": "file_name",
+              "value": "={{ $json.message.document.file_name }}",
+              "type": "string"
+            },
+            {
+              "id": "b40897e7-7849-40b8-9536-b31d55ed4909",
+              "name": "file_extension",
+              "value": "={{ $json.message.document.file_name.split('.').pop().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "60d9b16d-5120-47b2-bb35-ac08247205c4",
+              "name": "mime_type",
+              "value": "={{ $json.message.document.mime_type }}",
+              "type": "string"
+            },
+            {
+              "id": "74bb9094-b257-4b9d-a4f2-a54a6eb71510",
+              "name": "nombre",
+              "value": "={{ $json.message.document.mime_type }}",
+              "type": "string"
+            },
+            {
+              "id": "a90f2396-dbaa-4105-a378-6fe562ac1584",
+              "name": "estado",
+              "value": "pendiente_funcion",
+              "type": "string"
+            },
+            {
+              "id": "6511cec5-ca76-4a41-9574-6446f56b5106",
+              "name": "fecha",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3600,
+        96
+      ],
+      "id": "7752ae47-15f1-4e21-a5d3-bdd3631afd29",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1xxfeFzNvNan7iO539P-QSZZAQ7h6bQ45ZEmp35p_ces",
+          "mode": "list",
+          "cachedResultName": "telegram_archivos_pendientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xxfeFzNvNan7iO539P-QSZZAQ7h6bQ45ZEmp35p_ces/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xxfeFzNvNan7iO539P-QSZZAQ7h6bQ45ZEmp35p_ces/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chat_id": "={{ $json.chat_id }}",
+            "file_id": "={{ $json.file_id }}",
+            "file_name": "={{ $json.file_name }}",
+            "file_extension": "={{ $json.file_extension }}",
+            "mime_type": "={{ $json.mime_type }}",
+            "nombre": "={{ $json.nombre }}",
+            "estado": "={{ $json.estado }}",
+            "fecha": "={{ $json.fecha }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "file_id",
+              "displayName": "file_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "file_name",
+              "displayName": "file_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "file_extension",
+              "displayName": "file_extension",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mime_type",
+              "displayName": "mime_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3072,
+        96
+      ],
+      "id": "f8feda10-2d40-4c36-b7f1-1080a4196248",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZckbsL72HsFKtmSK",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "fe043a00-4347-41eb-83a0-25f3eb45354d",
+              "leftValue": "={{ $json.callback_query?.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3696,
+        288
+      ],
+      "id": "67fa0663-6270-43ef-9b86-0101867c4d59",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a147c05f-ec09-4b73-b58f-19b62c9c417f",
+              "name": "chat_id",
+              "value": "={{ $json.callback_query.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "6a0590f2-30dc-4c8f-9131-3f5013663dc9",
+              "name": "funcion_codigo",
+              "value": "={{ $json.callback_query.data }}",
+              "type": "string"
+            },
+            {
+              "id": "e15bbb38-fe7e-4e40-a550-12f9214845ce",
+              "name": "funcion_elegida",
+              "value": "={{\n  {\n    \"funcion_1\": \"Función 1: Control de Legalidad y Cumplimiento Normativo\",\n    \"funcion_2\": \"Función 2: Control de Calidad y Consistencia de Informes\",\n    \"funcion_3\": \"Función 3: Detección de Riesgos, Irregularidades o Posibles Responsabilidades\",\n    \"funcion_4\": \"Función 4: Trazabilidad y Auditoría en Blockchain\"\n  }[$json.callback_query.data] || $json.callback_query.data\n}}",
+              "type": "string"
+            },
+            {
+              "id": "4aa30aa2-e7f7-4e5e-8ba4-df2bb1650c0d",
+              "name": "callback_data",
+              "value": "={{ $json.callback_query.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3472,
+        272
+      ],
+      "id": "2e4f3a3d-8500-4d1a-a1c1-b182c6eb1e20",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Datos del callback (vienen del nodo Edit Fields1)\nconst callback = $('Edit Fields1').first().json;\n\n// Todas las filas del Google Sheet\nconst rows = items.map(item => item.json);\n\n// Normalizamos chat_id del callback\nconst chatId = String(callback.chat_id).trim();\n\n// Buscar filas pendientes de este usuario\nconst pendientes = rows.filter(r =>\n  String(r.chat_id).trim() === chatId &&\n  String(r.estado || '').trim().toLowerCase() === 'pendiente_funcion'\n);\n\n// Si no hay ninguna fila pendiente\nif (!pendientes.length) {\n  return [{\n    json: {\n      ok: false,\n      error: 'No se encontró archivo pendiente para este usuario',\n      chat_id: chatId,\n      funcion_codigo: callback.funcion_codigo || null,\n      total_filas_recibidas: rows.length\n    }\n  }];\n}\n\n// Tomar la última fila pendiente (la más reciente)\nconst archivo = pendientes[pendientes.length - 1];\n\n// Mapear el código del botón a un nombre bonito\nconst mapaFunciones = {\n  funcion_1: 'Función 1: Evaluación del diseño de la prestación',\n  funcion_2: 'Función 2: Control de Calidad y Consistencia de Informes',\n  funcion_3: 'Función 3: Identificación de Riesgos y Hallazgos',\n  funcion_4: 'Función 4: Trazabilidad y Registro Blockchain'\n};\n\nconst funcionCodigo = callback.funcion_codigo || '';\nconst funcionElegida = mapaFunciones[funcionCodigo] || funcionCodigo;\n\n// Devolver lo necesario para Workflow 2\nreturn [{\n  json: {\n    ok: true,\n    chat_id: chatId,\n    funcion_codigo: funcionCodigo,\n    funcion_elegida: funcionElegida,\n\n    row_number: archivo.row_number,\n    file_id: archivo.file_id,\n    file_name: archivo.file_name,\n    file_extension: archivo.file_extension,\n    mime_type: archivo.mime_type,\n    estado_actual: archivo.estado,\n    fecha: archivo.fecha\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3056,
+        272
+      ],
+      "id": "7bb55ac2-ce79-4f9b-b95a-32e6ff5722be",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5355a5a9-1208-4894-ba5e-2182e62e3d48",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2848,
+        272
+      ],
+      "id": "9f3819cd-e135-440a-9d78-8efb2294d7eb",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1xxfeFzNvNan7iO539P-QSZZAQ7h6bQ45ZEmp35p_ces",
+          "mode": "list",
+          "cachedResultName": "telegram_archivos_pendientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xxfeFzNvNan7iO539P-QSZZAQ7h6bQ45ZEmp35p_ces/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xxfeFzNvNan7iO539P-QSZZAQ7h6bQ45ZEmp35p_ces/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3264,
+        272
+      ],
+      "id": "eb345e5d-23a0-4276-b6e6-49fdf9c90cba",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZckbsL72HsFKtmSK",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Code in JavaScript2').item.json.file_extension }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3df10811-4059-4162-9301-98bfb95a985c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4acc20c2-5c34-4a29-a3a2-2c1db786c27f",
+                    "leftValue": "={{ $('Code in JavaScript2').item.json.file_extension }}",
+                    "rightValue": "csv",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "csv"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -3808,
+        624
+      ],
+      "id": "70bbca8e-2a05-4e1c-989e-e498a0a029e0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -3568,
+        688
+      ],
+      "id": "1804c8b7-744c-4d96-b4f9-511b2f00dd6a",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9da3343d-4e46-4361-8201-595ed9c0abe6",
+              "name": "mensaje",
+              "value": "={{ $json['ANO_EJE|MES_EJE|TIPO_GOBIERNO|TIPO_GOBIERNO_NOMBRE|SECTOR|SECTOR_NOMBRE|PLIEGO|PLIEGO_NOMBRE|SEC_EJEC|EJECUTORA|EJECUTORA_NOMBRE|DEPARTAMENTO_EJECUTORA|DEPARTAMENTO_EJECUTORA_NOMBRE|PROVINCIA_EJECUTORA|PROVINCIA_EJECUTORA_NOMBRE|DISTRITO_EJECUTORA|DISTRITO_EJECUTORA_NOMBRE|SEC_FUNC|PROGRAMA_PPTO|PROGRAMA_PPTO_NOMBRE|TIPO_ACT_PROY|PRODUCTO_PROYECTO|PRODUCTO_PROYECTO_NOMBRE|ACTIVIDAD_ACCION_OBRA|ACTIVIDAD_ACCION_OBRA_NOMBRE|FUNCION|FUNCION_NOMBRE|DIVISION_FUNCIONAL|DIVISION_FUNCIONAL_NOMBRE|GRUPO_FUNCIONAL|GRUPO_FUNCIONAL_NOMBRE|META|FINALIDAD|META_NOMBRE|DEPARTAMENTO_META|DEPARTAMENTO_META_NOMBRE|RUBRO|RUBRO_NOMBRE|FUENTE_FINANC|FUENTE_FINANC_NOMBRE|TIPO_RECURSO|TIPO_RECURSO_NOMBRE|CATEG_GASTO|CATEG_GASTO_NOMBRE|TIPO_TRANSACCION|GENERICA|GENERICA_NOMBRE|SUBGENERICA|SUBGENERICA_NOMBRE|SUBGENERICA_DET|SUBGENERICA_DET_NOMBRE|ESPECIFICA|ESPECIFICA_NOMBRE|ESPECIFICA_DET|ESPECIFICA_DET_NOMBRE|MONTO_PIA|MONTO_PIM|MONTO_CERTIFICADO|MONTO_COMPROMETIDO_ANUAL|MONTO_COMPROMETIDO|MONTO_DEVENGADO|MONTO_GIRADO'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9356ddcc-1624-415d-922e-a90baa1a939f",
+              "name": "tipo_documento",
+              "value": "csv",
+              "type": "string"
+            },
+            {
+              "id": "0ddccccf-a54e-40a9-be04-e3cce6fb8dea",
+              "name": "columnas_usadas",
+              "value": "={{ $json.columnas_usadas }}",
+              "type": "string"
+            },
+            {
+              "id": "08f7c9ee-8f6b-4b3f-b6f5-759cd23e4711",
+              "name": "filas_totales",
+              "value": "={{ $json.filas_totales }}",
+              "type": "string"
+            },
+            {
+              "id": "5b548faa-922b-4cb3-8e04-638f90497edd",
+              "name": "filas_analizadas",
+              "value": "={{ $json.filas_totales }}",
+              "type": "string"
+            },
+            {
+              "id": "3d2d273f-fdc0-44b4-99a7-727bb0348661",
+              "name": "funcion_elegida",
+              "value": "={{ $('Edit Fields1').item.json.funcion_elegida }}",
+              "type": "string"
+            },
+            {
+              "id": "4583cae5-c9b0-4ac9-9dc6-d8feceae7ec0",
+              "name": "file_name",
+              "value": "=",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3120,
+        688
+      ],
+      "id": "bb0ab127-361f-4615-b141-42036f389391",
+      "name": "variable_contendio_csv"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "89a16057-ac94-4555-8536-19ee13e54d0f",
+              "name": "contenido_documento",
+              "value": "={{ $json.contenido_documento }}",
+              "type": "string"
+            },
+            {
+              "id": "e1a6ea18-3351-4e4c-acf9-dd69f5b83602",
+              "name": "tipo_documento",
+              "value": "pdf",
+              "type": "string"
+            },
+            {
+              "id": "6d28a0b6-bcc2-4136-9437-a41e98b8d892",
+              "name": "funcion_elegida",
+              "value": "={{ $('Code in JavaScript').item.json.funcion_elegida }}",
+              "type": "string"
+            },
+            {
+              "id": "255e6402-a686-48d3-a9a2-e4e5c8e18ce7",
+              "name": "chat_id",
+              "value": "={{ $('Code in JavaScript').item.json.chat_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e4314080-1420-4791-b9b9-b461e78b42ac",
+              "name": "file_name",
+              "value": "={{ $('Code in JavaScript').item.json.file_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3136,
+        480
+      ],
+      "id": "f093c5d1-17d9-47b3-b4d7-d9d86ef59d73",
+      "name": "variable_contendio_pdf"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ocr.space/parse/image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "helloworld"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "filetype",
+              "value": "pdf"
+            },
+            {
+              "name": "OCREngine",
+              "value": "2"
+            },
+            {
+              "name": "isOverlayRequired",
+              "value": "false"
+            },
+            {
+              "name": "isTable",
+              "value": "true"
+            },
+            {
+              "name": "detectOrientation",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -3536,
+        480
+      ],
+      "id": "4868af6d-ad61-4911-a2af-d8c90fdd102e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = items[0];\nconst json = item.json;\n\n// 1) Intentar extraer texto aunque OCR.space marque error parcial\nlet texto = '';\n\nif (Array.isArray(json.ParsedResults)) {\n  texto = json.ParsedResults\n    .map(r => r.ParsedText || '')\n    .join('\\n');\n}\n\n// Limpieza básica\ntexto = (texto || '')\n  .replace(/\\r/g, '\\n')\n  .replace(/\\n{3,}/g, '\\n\\n')\n  .replace(/[ \\t]{2,}/g, ' ')\n  .trim();\n\n// 2) Leer mensaje de error si existe\nlet mensajeError = '';\nif (Array.isArray(json.ErrorMessage) && json.ErrorMessage.length > 0) {\n  mensajeError = json.ErrorMessage.join(' | ');\n} else if (typeof json.ErrorMessage === 'string') {\n  mensajeError = json.ErrorMessage;\n}\n\n// 3) Si NO hay texto, sí es error real\nif (!texto) {\n  return [{\n    json: {\n      ok: false,\n      error: mensajeError || 'OCR no devolvió texto',\n      raw: json\n    }\n  }];\n}\n\n// 4) Si sí hay texto, seguimos aunque haya error parcial\nconst ocrParcial = !!json.IsErroredOnProcessing;\n\nreturn [{\n  json: {\n    ok: true,\n    tipo_documento: 'pdf',\n    contenido_documento: texto,\n    fuente_texto: 'ocr',\n    ocr_parcial: ocrParcial,\n    ocr_mensaje: mensajeError || null,\n    paginas_procesadas_limitadas: ocrParcial ? true : false\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3328,
+        480
+      ],
+      "id": "49dae946-959a-411a-ba93-604a139e6006",
+      "name": "Code - limpiar OCR"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=ROL: Eres una Inteligencia Artificial Avanzada de Control Gubernamental, especializada en análisis documental, control concurrente, control posterior, triaje de denuncias y evaluación de expedientes complejos, alineada con la Ley N.° 27785, las directivas de la Contraloría General de la República del Perú, normativa de control gubernamental vigente y principios de legalidad, objetividad, razonabilidad, neutralidad técnica y trazabilidad del análisis.\n\nCONFIGURACIÓN DE RESPUESTA:\n\n* Temperatura: 0\n* Estilo: técnico, objetivo, neutro, preciso, sin adornos.\n* Prohibido inventar datos no contenidos o no inferibles razonablemente del documento.\n* Si un dato no puede determinarse con suficiente evidencia, debes indicarlo expresamente como: \"No determinado con la información disponible\".\n* Debes priorizar exactitud, consistencia normativa, trazabilidad del hallazgo y utilidad práctica para la toma de decisiones de control.\n\nOBJETIVO GENERAL:\nAnalizar la información provista al final de este prompt y actuar como un motor autónomo de clasificación, evaluación y síntesis técnica para la generación de un “Informe de Evaluación Automática”. Tu salida será utilizada para construir un PDF ejecutivo de aproximadamente 3 páginas, por lo que debes generar contenido técnico suficiente, preciso, bien estructurado y diferenciado según la función detectada.\n\n======================================================================\nFASE 1: CLASIFICACIÓN Y ENRUTAMIENTO DEL DOCUMENTO\n==================================================\n\nAnaliza la naturaleza, estructura, lenguaje, formato y contenido del archivo o texto de entrada. Clasifícalo en una sola de las siguientes funciones:\n\n### FUNCIÓN 1 — ANÁLISIS DE RIESGO Y CRUCE DE DATOS (AUDITORÍA PREVENTIVA)\n\nClasifica en esta función si detectas uno o más de estos elementos:\n\n* Datos tabulares, matrices, CSV o tablas exportadas.\n* Registros presupuestales o financieros del SIAF/MEF.\n* Variables como PIM, PIA, Certificación, Compromiso, Devengado, Girado, Meta, Específica, Fuente de Financiamiento, Unidad Ejecutora, proveedor, orden de servicio, monto, fecha.\n* Finalidad de análisis orientada a detectar anomalías, ejecución presupuestal, fraccionamiento, patrones repetitivos o ineficiencia del gasto.\n\n### FUNCIÓN 2 — CONTROL DE CALIDAD Y CONSISTENCIA DE INFORMES\n\nClasifica en esta función si detectas uno o más de estos elementos:\n\n* Borradores o versiones de informes de control.\n* Informes de control simultáneo, informes de hito, informes de orientación de oficio, informes posteriores, informes de OCI o comisión auditora.\n* Textos estructurados como “situación adversa”, “hallazgo”, “criterio”, “efecto”, “recomendación”, “observaciones”.\n* Redacción técnico-auditora que requiere revisión de consistencia, neutralidad, completitud o corrección formal.\n\n### FUNCIÓN 3 — TRIAJE E INVESTIGACIÓN DE DENUNCIAS CIUDADANAS\n\nClasifica en esta función si detectas uno o más de estos elementos:\n\n* Texto redactado por un ciudadano, administrado, denunciante o tercero.\n* Acusaciones o quejas sobre presuntos actos irregulares de funcionarios o entidades públicas.\n* Señalamientos sobre licitaciones, nepotismo, obras, contrataciones, pagos, uso indebido de recursos, abuso de cargo, direccionamiento, omisiones o encubrimiento.\n* Información de indicios que requiere evaluación de admisibilidad y verificabilidad.\n\n### FUNCIÓN 4 — RESUMEN EJECUTIVO DE EXPEDIENTES COMPLEJOS\n\nClasifica en esta función si detectas uno o más de estos elementos:\n\n* Informes definitivos de auditoría, expedientes concluidos, carpetas de investigación, informes de servicios de control posterior complejos, casos con múltiples responsables o perjuicio económico consolidado.\n* Documentos extensos con hechos, responsables, perjuicios, acciones legales, administrativas o penales.\n* Casos con un esquema irregular consolidado que requiere síntesis ejecutiva de alto nivel.\n\nREGLA DE CLASIFICACIÓN:\n\n* Debes seleccionar una sola función.\n* Si existen señales mixtas, elige la función dominante según el propósito principal del documento.\n* En `motivo_clasificacion` explica de forma breve pero técnica por qué el documento fue enrutado a esa función.\n\n======================================================================\nFASE 2: ANÁLISIS ESPECIALIZADO SEGÚN LA FUNCIÓN DETECTADA\n=========================================================\n\nAplica exclusivamente las instrucciones de la función detectada.\n\n---\n\n## [FUNCION 1] ANÁLISIS DE RIESGO Y CRUCE DE DATOS\n\nObjetivo: identificar patrones de riesgo, anomalías presupuestales, posibles indicios de fraccionamiento, debilidades de ejecución y alertas preventivas.\n\nDebes analizar, como mínimo, los siguientes ejes:\n\n1. Alertas de velocidad, fraccionamiento o direccionamiento:\n\n   * Detecta múltiples registros con montos idénticos, montos cercanos o menores a topes relevantes, pagos repetidos, compromisos/devengados/girados reiterativos hacia un mismo proveedor, misma UE o mismo objeto de gasto en periodos cortos.\n   * Evalúa si hay concentración de operaciones por proveedor, dependencia, fecha o tipo de gasto.\n   * Señala si existen indicios compatibles con fraccionamiento, direccionamiento o atomización del gasto.\n\n2. Ineficiencia o baja ejecución:\n\n   * Evalúa si existe un PIM o certificación alta con bajo devengado o girado.\n   * Identifica brechas relevantes entre certificación, compromiso, devengado y girado.\n   * Determina si hay recursos comprometidos pero no ejecutados o ejecutados tardíamente.\n\n3. Consistencia de fases:\n\n   * Revisa si la secuencia presupuestal y financiera luce razonable.\n   * Señala giros demasiado inmediatos, devengados sin una lógica operativa aparente, o registros que sugieran una secuencia atípica.\n\n4. Hallazgo preventivo:\n\n   * Formula la condición en términos de riesgo o anomalía observable.\n   * Formula el criterio usando reglas de consistencia presupuestal, principios de control, razonabilidad del gasto y, si corresponde, normativa aplicable.\n   * Formula el efecto en términos de riesgo de uso ineficiente de recursos, afectación del control, potencial fraccionamiento, retraso en metas o exposición a perjuicio.\n\n5. Resultado especializado para Función 1:\n   Además del esquema general, debes llenar:\n\n   * `alertas_clave`: lista de 3 a 6 alertas concretas.\n   * `indicadores_clave`: lista de 3 a 6 indicadores o patrones observados.\n   * `riesgo_global`: “Bajo”, “Medio”, “Alto” o “Crítico”.\n   * `nivel_prioridad`: “Monitoreo”, “Revisión focalizada”, “Acción de control simultáneo” o “Escalamiento”.\n   * `acciones_recomendadas`: entre 3 y 5 acciones concretas, viables y ejecutables.\n   * `resumen_ejecutivo`: síntesis técnica de 2 a 4 párrafos orientada a un lector directivo.\n\n---\n\n## [FUNCION 2] CONTROL DE CALIDAD Y CONSISTENCIA DE INFORMES\n\nObjetivo: evaluar la calidad técnica del informe, la suficiencia de la tríada del hallazgo, la consistencia normativa, la neutralidad del lenguaje y la viabilidad de las recomendaciones.\n\nDebes analizar, como mínimo, los siguientes ejes:\n\n1. Tríada del hallazgo:\n\n   * Verifica si la Condición está claramente descrita como hecho verificable.\n   * Verifica si el Criterio cita o alude de forma suficiente a la norma, directiva, lineamiento o disposición aplicable.\n   * Verifica si el Efecto explica la consecuencia institucional, económica, administrativa, operativa o de control.\n   * Si alguno es insuficiente, ambiguo, genérico o ausente, indícalo expresamente.\n\n2. Auditoría de lenguaje:\n\n   * Detecta adjetivos subjetivos, imputaciones no demostradas, juicios de valor, conclusiones prematuras o expresiones poco técnicas.\n   * Evalúa si el tono es neutro, verificable, profesional y compatible con un informe de control.\n\n3. Consistencia normativa y de recomendaciones:\n\n   * Evalúa si las recomendaciones tienen destinatario claro y acción concreta.\n   * Verifica si son viables dentro del marco de control gubernamental y si guardan coherencia con el hallazgo.\n   * Señala si hay omisiones de sustento normativo, problemas de precisión o falta de trazabilidad entre hallazgo, efecto y recomendación.\n\n4. Resultado especializado para Función 2:\n   Además del esquema general, debes llenar:\n\n   * `resumen_ejecutivo`: síntesis técnica de 2 a 4 párrafos sobre la calidad global del informe, su nivel de madurez y sus principales observaciones.\n   * `riesgo_global`: “Bajo”, “Medio”, “Alto” o “Crítico”.\n   * `nivel_prioridad`: “Apto para firma”, “Apto con ajustes menores”, “Devolver con observaciones” o “Revisión integral”.\n   * `alertas_clave`: lista de 3 a 6 alertas sobre vacíos de tríada, lenguaje, consistencia o recomendaciones.\n   * `observaciones_especificas`: lista de 4 a 8 observaciones concretas y accionables.\n   * `acciones_recomendadas`: lista de 3 a 5 acciones concretas para mejorar el informe antes de su validación o firma.\n   * `evaluacion_triada`: objeto con esta estructura:\n     {\n     \"condicion\": \"Completa / Parcial / Ausente\",\n     \"criterio\": \"Completa / Parcial / Ausente\",\n     \"efecto\": \"Completa / Parcial / Ausente\"\n     }\n\n---\n\n## [FUNCION 3] TRIAJE E INVESTIGACIÓN DE DENUNCIAS CIUDADANAS\n\nObjetivo: determinar admisibilidad, suficiencia mínima de indicios, tipificación preliminar y prioridad de atención.\n\nDebes analizar, como mínimo, los siguientes ejes:\n\n1. Admisibilidad:\n\n   * Determina si los hechos descritos involucran recursos públicos, bienes del Estado, contrataciones, funcionarios, servidores, obras, programas, pagos, fondos o inconducta funcional.\n   * Distingue entre denuncia con relevancia para control y simple queja administrativa o conflicto interpersonal sin relevancia de control.\n\n2. Verificabilidad e indicios:\n\n   * Evalúa si la denuncia aporta nombres, cargos, fechas, montos, lugares, expedientes, contratos, links, obras, unidades ejecutoras o cualquier elemento verificable.\n   * Diferencia entre:\n     a) denuncia con sustento verificable,\n     b) denuncia con indicios débiles,\n     c) denuncia genérica sin base suficiente.\n\n3. Clasificación de materia:\n\n   * Tipifica preliminarmente la materia: licitaciones dirigidas, nepotismo, malversación, uso indebido de recursos, pago irregular, obra paralizada, favorecimiento, omisión funcional, etc.\n\n4. Resultado especializado para Función 3:\n   Además del esquema general, debes llenar:\n\n   * `resumen_ejecutivo`: síntesis técnica de 2 a 4 párrafos sobre la denuncia, su materia y el nivel de sustento.\n   * `riesgo_global`: “Bajo”, “Medio”, “Alto” o “Crítico”.\n   * `nivel_prioridad`: “Archivar”, “Solicitar ampliación”, “Admisible para evaluación” o “Admisible para investigación”.\n   * `alertas_clave`: lista de 3 a 6 alertas relevantes.\n   * `indicios_verificables`: lista de 3 a 8 elementos verificables identificados en la denuncia o “No se identifican elementos suficientes”.\n   * `tipificacion_denuncia`: lista de una o más categorías preliminares.\n   * `acciones_recomendadas`: lista de 3 a 5 acciones concretas.\n   * `evaluacion_admisibilidad`: objeto con esta estructura:\n     {\n     \"relevancia_control\": \"Sí / No / Parcial\",\n     \"indicios_minimos\": \"Sí / No / Parcial\",\n     \"materia_controlable\": \"Sí / No / Parcial\"\n     }\n\n---\n\n## [FUNCION 4] RESUMEN EJECUTIVO DE EXPEDIENTES COMPLEJOS\n\nObjetivo: sintetizar expedientes complejos de forma ejecutiva, identificando esquema irregular, daño, responsables, riesgos y línea de actuación.\n\nDebes analizar, como mínimo, los siguientes ejes:\n\n1. Síntesis macro:\n\n   * Identifica la entidad pública involucrada.\n   * Explica el núcleo del presunto esquema irregular o del caso auditado.\n   * Resume el problema central en términos ejecutivos.\n\n2. Cuantificación del daño:\n\n   * Extrae el monto exacto del perjuicio económico si existe.\n   * Si no es posible determinarlo con claridad, indícalo expresamente.\n\n3. Responsabilidades e implicados:\n\n   * Señala cuántos funcionarios o exfuncionarios aparecen vinculados.\n   * Identifica cargos clave y el tipo de responsabilidad si el documento lo permite.\n\n4. Modus operandi:\n\n   * Resume en pasos claros cómo se habría ejecutado la irregularidad o cómo se configuró el perjuicio.\n\n5. Resultado especializado para Función 4:\n   Además del esquema general, debes llenar:\n\n   * `resumen_ejecutivo`: síntesis de 3 a 5 párrafos ejecutivos, apta para la portada analítica del PDF.\n   * `riesgo_global`: “Bajo”, “Medio”, “Alto” o “Crítico”.\n   * `nivel_prioridad`: “Seguimiento”, “Revisión especializada”, “Acción de control complementaria” o “Escalamiento”.\n   * `alertas_clave`: lista de 3 a 6 alertas relevantes.\n   * `implicados_clave`: lista de funcionarios/cargos o “No determinado con la información disponible”.\n   * `cuantificacion_dano`: monto exacto en Soles o “No determinado con la información disponible”.\n   * `modus_operandi`: lista de 3 a 8 pasos concretos.\n   * `acciones_recomendadas`: lista de 3 a 5 acciones concretas.\n\n======================================================================\nFASE 3: REGLAS DE REDACCIÓN DE LOS CAMPOS GENERALES\n===================================================\n\nDebes completar siempre los siguientes campos generales con criterio técnico:\n\n1. `entidad_contexto`\n\n   * Nombre de la entidad pública, municipalidad, pliego, ministerio, programa, unidad ejecutora o contexto institucional principal evaluado.\n   * Si no puede determinarse, usar: \"No determinado con la información disponible\".\n\n2. `motivo_clasificacion`\n\n   * Explica en 2 a 5 líneas por qué el documento fue clasificado en esa función.\n\n3. `hallazgo_condicion`\n\n   * Debe redactarse como hecho principal observado, debilidad detectada, patrón irregular, deficiencia de control o anomalía principal.\n   * No redactar como simple opinión.\n\n4. `hallazgo_criterio`\n\n   * Debe contener la norma, directiva, principio, criterio de control, lógica presupuestal o estándar técnico aplicable.\n   * Si el documento no aporta la cita exacta, formula un criterio prudente y técnicamente consistente, sin inventar numerales específicos no sustentados.\n\n5. `hallazgo_efecto`\n\n   * Debe describir la consecuencia real o el riesgo razonable derivado del hallazgo: perjuicio económico, debilitamiento del control, afectación institucional, baja calidad del informe, improcedencia de la denuncia, retraso, exposición a responsabilidad, etc.\n\n6. `auditoria_observaciones`\n\n   * Debe ser un análisis técnico integrado del documento: calidad, suficiencia, consistencia, verificabilidad, vacíos, riesgos o fortalezas.\n   * Debe tener entre 1 y 3 párrafos útiles para el informe.\n\n7. `conclusion_triaje`\n\n   * Debe ser una decisión clara, cerrada y compatible con la función detectada.\n   * Usa únicamente dictámenes coherentes con el tipo de documento, por ejemplo:\n\n     * Función 1: “Monitoreo preventivo”, “Revisión focalizada”, “Iniciar acción de control simultáneo”.\n     * Función 2: “Apto para firma”, “Apto con ajustes menores”, “Devolver con observaciones”, “Revisión integral”.\n     * Función 3: “Archivar por falta de sustento”, “Solicitar ampliación de información”, “Admisible para evaluación”, “Admisible para investigación”.\n     * Función 4: “Seguimiento especializado”, “Escalamiento para revisión”, “Acción de control complementaria”.\n\n======================================================================\nFASE 4: REGLAS DE CALIDAD DE LA RESPUESTA\n=========================================\n\nReglas obligatorias:\n\n* No inventes nombres, montos, numerales o responsables si no aparecen o no son inferibles con seguridad.\n* No uses lenguaje emocional, especulativo ni acusatorio.\n* No declares responsabilidad penal, civil o administrativa como hecho consumado si el documento solo aporta indicios.\n* No repitas textualmente grandes bloques del documento; sintetiza con precisión.\n* Si la información es insuficiente, dilo de forma explícita y conserva el análisis prudente.\n* El contenido debe ser suficientemente rico para alimentar un PDF de aproximadamente 3 páginas, por lo que debes desarrollar con sustancia el `resumen_ejecutivo`, `auditoria_observaciones`, `alertas_clave`, `acciones_recomendadas` y los campos específicos de la función detectada.\n* Todos los textos deben estar en español técnico formal.\n\n======================================================================\nFASE 5: FORMATO OBLIGATORIO DE SALIDA\n=====================================\n\nDebes responder ÚNICAMENTE con un objeto JSON válido.\nNo agregues saludos, explicaciones, markdown, comentarios ni texto fuera del JSON.\n\nEstructura base obligatoria del JSON:\n\n{\n\"tipo_documento\": \"csv o pdf\",\n\"entidad_contexto\": \"\",\n\"funcion_detectada\": \"\",\n\"motivo_clasificacion\": \"\",\n\"resumen_ejecutivo\": \"\",\n\"hallazgo_condicion\": \"\",\n\"hallazgo_criterio\": \"\",\n\"hallazgo_efecto\": \"\",\n\"auditoria_observaciones\": \"\",\n\"riesgo_global\": \"\",\n\"nivel_prioridad\": \"\",\n\"alertas_clave\": [],\n\"acciones_recomendadas\": [],\n\"conclusion_triaje\": \"\"\n}\n\nAdemás:\n\n* Si detectas FUNCIÓN 1, agrega:\n  \"indicadores_clave\": []\n\n* Si detectas FUNCIÓN 2, agrega:\n  \"observaciones_especificas\": [],\n  \"evaluacion_triada\": {\n  \"condicion\": \"\",\n  \"criterio\": \"\",\n  \"efecto\": \"\"\n  }\n\n* Si detectas FUNCIÓN 3, agrega:\n  \"indicios_verificables\": [],\n  \"tipificacion_denuncia\": [],\n  \"evaluacion_admisibilidad\": {\n  \"relevancia_control\": \"\",\n  \"indicios_minimos\": \"\",\n  \"materia_controlable\": \"\"\n  }\n\n* Si detectas FUNCIÓN 4, agrega:\n  \"implicados_clave\": [],\n  \"cuantificacion_dano\": \"\",\n  \"modus_operandi\": []\n\nReglas finales:\n\n* `tipo_documento` = \"csv\" únicamente para la FUNCIÓN 1.\n* `tipo_documento` = \"pdf\" para las funciones 2, 3 y 4.\n* `funcion_detectada` debe contener el nombre exacto de la función identificada.\n* Mantén consistencia entre `riesgo_global`, `nivel_prioridad` y `conclusion_triaje`.\n* El JSON debe ser válido, bien cerrado y sin campos vacíos innecesarios.\n\n======================================================================\nDOCUMENTO / TEXTO / DATA A ANALIZAR\n===================================\n\n{{ $json.mensaje }}\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        -4144,
+        912
+      ],
+      "id": "67d4b0b4-ce98-48cc-8f0c-b910a2c52891",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "MZ01cwcTy1iKR2GT",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html_content": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Informe de Evaluación Automática</title>\n  <style>\n    @page {\n      size: A4;\n      margin: 16mm 14mm 16mm 14mm;\n    }\n\n    body {\n      margin: 0;\n      padding: 0;\n      font-family: Arial, Helvetica, sans-serif;\n      font-size: 12px;\n      line-height: 1.5;\n      color: #2b2b2b;\n      background: #ffffff;\n    }\n\n    .page {\n      width: 100%;\n      page-break-after: always;\n    }\n\n    .last-page {\n      page-break-after: auto;\n    }\n\n    .no-break {\n      page-break-inside: avoid;\n    }\n\n    /* ===== PALETA ===== */\n    .bg-primary { background: #8b0d23; }\n    .bg-secondary { background: #5f0d19; }\n    .bg-light { background: #f8f1f3; }\n    .bg-soft { background: #fcf7f8; }\n    .text-white { color: #ffffff; }\n    .text-primary { color: #8b0d23; }\n    .text-dark { color: #2b2b2b; }\n    .border-primary { border-color: #8b0d23; }\n\n    /* ===== TIPOGRAFÍA ===== */\n    h1, h2, h3, h4, p {\n      margin-top: 0;\n    }\n\n    .small {\n      font-size: 11px;\n    }\n\n    .muted {\n      color: #6f5d62;\n    }\n\n    .mono {\n      font-family: \"Courier New\", Courier, monospace;\n      word-break: break-word;\n    }\n\n    /* ===== PORTADA ===== */\n    .cover {\n      padding: 0;\n      border: 1px solid #d9c5ca;\n      min-height: 255mm;\n    }\n\n    .cover-top {\n      background: linear-gradient(135deg, #a20f29 0%, #8b0d23 55%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 28px 28px 22px 28px;\n    }\n\n    .cover-logo {\n      text-align: center;\n      margin-bottom: 18px;\n    }\n\n    .cover-logo img {\n      max-width: 90px;\n      height: auto;\n      display: block;\n      margin: 0 auto 12px auto;\n    }\n\n    .cover-title {\n      text-align: center;\n      font-size: 26px;\n      font-weight: bold;\n      text-transform: uppercase;\n      margin: 10px 0 8px 0;\n      letter-spacing: 0.5px;\n    }\n\n    .cover-subtitle {\n      text-align: center;\n      font-size: 13px;\n      margin: 0;\n      opacity: 0.95;\n    }\n\n    .cover-body {\n      padding: 28px;\n      background: #ffffff;\n    }\n\n    .cover-info-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin-top: 10px;\n    }\n\n    .cover-info-table td {\n      border: 1px solid #e2d2d7;\n      padding: 12px 14px;\n      vertical-align: top;\n      width: 50%;\n    }\n\n    .cover-label {\n      display: block;\n      font-size: 11px;\n      font-weight: bold;\n      color: #8b0d23;\n      text-transform: uppercase;\n      margin-bottom: 5px;\n    }\n\n    .cover-value {\n      font-size: 13px;\n      color: #2b2b2b;\n    }\n\n    .cover-summary {\n      margin-top: 18px;\n      border: 1px solid #e2d2d7;\n      background: #fcf7f8;\n      padding: 16px;\n      text-align: justify;\n    }\n\n    .cover-footer {\n      margin-top: 25px;\n      padding-top: 10px;\n      border-top: 1px solid #e6d9dd;\n      font-size: 11px;\n      color: #6a5b60;\n      text-align: center;\n    }\n\n    /* ===== HEADER ===== */\n    .header {\n      background: linear-gradient(135deg, #a20f29 0%, #8b0d23 55%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 18px 22px;\n      margin-bottom: 18px;\n    }\n\n    .header-table {\n      width: 100%;\n      border-collapse: collapse;\n    }\n\n    .header-table td {\n      vertical-align: middle;\n    }\n\n    .header-logo {\n      width: 70px;\n    }\n\n    .header-logo img {\n      max-width: 35px;\n      height: auto;\n      display: block;\n    }\n\n    .header-title {\n      font-size: 22px;\n      font-weight: bold;\n      text-transform: uppercase;\n      margin: 0;\n    }\n\n    .header-subtitle {\n      font-size: 12px;\n      margin-top: 4px;\n    }\n\n    .header-badge {\n      text-align: right;\n      font-size: 11px;\n      font-weight: bold;\n      text-transform: uppercase;\n    }\n\n    /* ===== CAJAS / TABLAS ===== */\n    .meta-box,\n    .content-box,\n    .conclusion-box,\n    .triada-box,\n    .card-box {\n      border: 1px solid #e2d2d7;\n      background: #ffffff;\n    }\n\n    .meta-box {\n      margin-bottom: 20px;\n    }\n\n    .meta-head,\n    .card-head {\n      background: #f8f1f3;\n      color: #8b0d23;\n      font-weight: bold;\n      text-transform: uppercase;\n      padding: 12px 16px;\n      border-bottom: 1px solid #e2d2d7;\n      font-size: 12px;\n    }\n\n    .meta-table,\n    .info-table,\n    .social-table {\n      width: 100%;\n      border-collapse: collapse;\n    }\n\n    .meta-table td,\n    .info-table td,\n    .social-table td {\n      padding: 14px 16px;\n      border-right: 1px solid #e2d2d7;\n      border-bottom: 1px solid #e2d2d7;\n      vertical-align: top;\n    }\n\n    .meta-table td:last-child,\n    .info-table td:last-child,\n    .social-table td:last-child {\n      border-right: none;\n    }\n\n    .meta-table tr:last-child td,\n    .info-table tr:last-child td,\n    .social-table tr:last-child td {\n      border-bottom: none;\n    }\n\n    .meta-label,\n    .info-label,\n    .social-label {\n      display: block;\n      font-size: 11px;\n      font-weight: bold;\n      text-transform: uppercase;\n      color: #8b0d23;\n      margin-bottom: 6px;\n    }\n\n    .meta-value,\n    .info-value,\n    .social-value {\n      font-size: 13px;\n      color: #2b2b2b;\n    }\n\n    /* ===== SECCIONES ===== */\n    .section {\n      margin-bottom: 20px;\n      page-break-inside: avoid;\n    }\n\n    .section-title {\n      background: #f8f1f3;\n      color: #8b0d23;\n      font-size: 14px;\n      font-weight: bold;\n      text-transform: uppercase;\n      padding: 10px 14px;\n      border-left: 5px solid #8b0d23;\n      margin-bottom: 10px;\n    }\n\n    .content-box {\n      padding: 16px;\n      text-align: justify;\n    }\n\n    /* ===== GRID 2 COLUMNAS ===== */\n    .two-col {\n      width: 100%;\n      border-collapse: separate;\n      border-spacing: 0;\n      margin-bottom: 18px;\n    }\n\n    .two-col td {\n      width: 50%;\n      vertical-align: top;\n      padding: 0 6px 0 0;\n    }\n\n    .two-col td:last-child {\n      padding: 0 0 0 6px;\n    }\n\n    /* ===== BADGES ===== */\n    .pill {\n      display: inline-block;\n      padding: 4px 10px;\n      border-radius: 999px;\n      font-size: 11px;\n      font-weight: bold;\n      text-transform: uppercase;\n      background: #f3e4e8;\n      color: #8b0d23;\n      border: 1px solid #dfc4cb;\n      margin-right: 6px;\n      margin-bottom: 6px;\n    }\n\n    /* ===== TRIADA ===== */\n    .triada-box {\n      margin-bottom: 12px;\n      page-break-inside: avoid;\n    }\n\n    .triada-head {\n      color: #ffffff;\n      font-weight: bold;\n      text-transform: uppercase;\n      padding: 10px 14px;\n      font-size: 12px;\n    }\n\n    .triada-condicion {\n      background: #a20f29;\n    }\n\n    .triada-criterio {\n      background: #5f0d19;\n    }\n\n    .triada-efecto {\n      background: #c3203c;\n    }\n\n    .triada-causa {\n      background: #7f1d2d;\n    }\n\n    .triada-body {\n      padding: 14px;\n      background: #ffffff;\n      text-align: justify;\n      border-top: 1px solid #e2d2d7;\n    }\n\n    /* ===== LISTAS ===== */\n    ul.clean-list {\n      margin: 0;\n      padding-left: 18px;\n    }\n\n    ul.clean-list li {\n      margin-bottom: 8px;\n      text-align: justify;\n    }\n\n    /* ===== CONCLUSIÓN ===== */\n    .conclusion-head {\n      background: linear-gradient(135deg, #8b0d23 0%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 12px 16px;\n      font-size: 15px;\n      font-weight: bold;\n      text-transform: uppercase;\n    }\n\n    .conclusion-body {\n      padding: 16px;\n      font-size: 14px;\n      font-weight: bold;\n      color: #5f0d19;\n      text-align: justify;\n    }\n\n    /* ===== FOOTER ===== */\n    .footer {\n      margin-top: 28px;\n      padding-top: 12px;\n      border-top: 1px solid #e2d2d7;\n      text-align: center;\n      font-size: 11px;\n      color: #7b6b70;\n    }\n\n    /* ===== BLOCKCHAIN ===== */\n    .blockchain-hero {\n      background: linear-gradient(135deg, #5f0d19 0%, #8b0d23 60%, #a20f29 100%);\n      color: #ffffff;\n      padding: 22px;\n      margin-bottom: 18px;\n    }\n\n    .blockchain-title {\n      font-size: 22px;\n      font-weight: bold;\n      text-transform: uppercase;\n      margin-bottom: 6px;\n    }\n\n    .hash-box {\n      border: 1px solid #e2d2d7;\n      background: #fcf7f8;\n      padding: 14px;\n      margin-top: 12px;\n    }\n\n    /* ===== REDES ===== */\n    .contact-page {\n      border: 1px solid #e2d2d7;\n      background: #ffffff;\n      min-height: 255mm;\n    }\n\n    .contact-header {\n      background: linear-gradient(135deg, #a20f29 0%, #8b0d23 55%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 24px;\n      text-align: center;\n    }\n\n    .contact-header img {\n      max-width: 90px;\n      height: auto;\n      display: block;\n      margin: 0 auto 12px auto;\n    }\n\n    .contact-title {\n      margin: 0;\n      font-size: 24px;\n      font-weight: bold;\n      text-transform: uppercase;\n    }\n\n    .contact-subtitle {\n      margin-top: 8px;\n      font-size: 12px;\n    }\n\n    .contact-body {\n      padding: 24px;\n    }\n\n    .contact-intro {\n      margin-bottom: 18px;\n      text-align: justify;\n      color: #403437;\n    }\n\n    .contact-note {\n      margin-top: 18px;\n      background: #f8f1f3;\n      border-left: 5px solid #8b0d23;\n      padding: 14px;\n      color: #403437;\n      text-align: justify;\n    }\n\n    .contact-footer {\n      margin-top: 22px;\n      padding-top: 12px;\n      border-top: 1px solid #e2d2d7;\n      text-align: center;\n      font-size: 11px;\n      color: #7b6b70;\n    }\n  </style>\n</head>\n<body>\n\n  <!-- ===================== PORTADA ===================== -->\n  <div class=\"page cover\">\n    <div class=\"cover-top\">\n      <div class=\"cover-logo\">\n        <img src=\"https://res.cloudinary.com/ds6edzck9/image/upload/f_auto,q_auto/Recurso_1_2_cc8bra\" alt=\"Logo ZasPe\">\n      </div>\n      <div class=\"cover-title\">Informe de Evaluación Automática</div>\n      <p class=\"cover-subtitle\">\n        Reporte automatizado de clasificación, consistencia, observaciones, triaje y trazabilidad del análisis\n      </p>\n    </div>\n\n    <div class=\"cover-body\">\n      <table class=\"cover-info-table\">\n        <tr>\n          <td>\n            <span class=\"cover-label\">Entidad / Contexto</span>\n            <div class=\"cover-value\">{{$('Code - Preparar Blockchain').item.json.entidad_contexto || 'No consignado' }}</div>\n          </td>\n          <td>\n            <span class=\"cover-label\">Función Detectada</span>\n            <div class=\"cover-value\">{{$('Code - Preparar Blockchain').item.json.funcion_detectada || 'No identificada' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"cover-label\">Tipo de Documento</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.tipo_documento || 'No consignado' }}</div>\n          </td>\n          <td>\n            <span class=\"cover-label\">Asunto</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.asunto || 'Informe generado automáticamente' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"cover-label\">Fecha del Informe</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_fecha || $now.format('yyyy-MM-dd') }}</div>\n          </td>\n          <td>\n            <span class=\"cover-label\">Hora de Generación</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_hora || $now.format('HH:mm:ss') }}</div>\n          </td>\n        </tr>\n      </table>\n\n      \n\n      <div class=\"cover-footer\">\n        Sistema de Gestión de Informes • Documento de Control Interno Confidencial\n      </div>\n    </div>\n  </div>\n\n  <!-- ===================== INFORME PRINCIPAL ===================== -->\n  <div class=\"page\">\n    <div class=\"header\">\n      <table class=\"header-table\">\n        <tr>\n          <td class=\"header-logo\">\n            <img src=\"https://res.cloudinary.com/ds6edzck9/image/upload/v1782430826/Recurso_2_2_zuobhe.png\" alt=\"Logo ZasPe\">\n          </td>\n          <td>\n            <div class=\"header-title\">Informe de Evaluación Automática</div>\n            <div class=\"header-subtitle\">Análisis automatizado de clasificación, hallazgo, observaciones y triaje</div>\n          </td>\n          <td class=\"header-badge\">\n            CONFIDENCIAL\n          </td>\n        </tr>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">1. Motivo de Clasificación / Resumen</div>\n      <div class=\"content-box\">\n        {{ $('Code - Preparar Blockchain').item.json.motivo_clasificacion || 'No se registró motivo de clasificación.' }}\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">2. Resumen Ejecutivo</div>\n      <div class=\"content-box\">\n        {{ $('Code - Preparar Blockchain').item.json.resumen_ejecutivo || 'No se generó un resumen ejecutivo para este caso.' }}\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">3. Análisis de la Tríada del Hallazgo</div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-condicion\">Condición</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_condicion || 'No consignado.' }}\n        </div>\n      </div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-criterio\">Criterio</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_criterio || 'No consignado.' }}\n        </div>\n      </div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-efecto\">Efecto</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_efecto || 'No consignado.' }}\n        </div>\n      </div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-causa\">Causa / Factor asociado</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_causa || 'No consignado por el modelo.' }}\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">4. Auditoría de Lenguaje y Observaciones</div>\n      <div class=\"content-box\">\n        {{ $('Code - Preparar Blockchain').item.json.analisis_json.auditoria_observaciones || $json.auditoria_observaciones || 'No se registraron observaciones de auditoría.' }}\n      </div>\n    </div>\n\n    <div class=\"section no-break\">\n      <div class=\"section-title\">5. Evaluación Complementaria</div>\n\n      <table class=\"two-col\">\n        <tr>\n          <td>\n            <div class=\"card-box\">\n              <div class=\"card-head\">Riesgo y Prioridad</div>\n              <table class=\"info-table\">\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Riesgo Global</span>\n                    <div class=\"info-value\">{{ $('Code - Preparar Blockchain').item.json.analisis_json.riesgo_global || 'No determinado' }}</div>\n                  </td>\n                </tr>\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Nivel / Prioridad</span>\n                    <div class=\"info-value\">{{ $('Code - Preparar Blockchain').item.json.analisis_json.nivel_prioridad || 'No determinado' }}</div>\n                  </td>\n                </tr>\n              </table>\n            </div>\n          </td>\n\n          <td>\n            <div class=\"card-box\">\n              <div class=\"card-head\">Evaluación de la Tríada</div>\n              <table class=\"info-table\">\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Condición</span>\n                    <div class=\"info-value\">\n                      {{ ($('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada && $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.condicion) ? $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.condicion : 'No evaluada' }}\n                    </div>\n                  </td>\n                </tr>\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Criterio</span>\n                    <div class=\"info-value\">\n                      {{ ($('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada && $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.criterio) ? $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.criterio : 'No evaluada' }}\n                    </div>\n                  </td>\n                </tr>\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Efecto</span>\n                    <div class=\"info-value\">\n                      {{ ($('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada && $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.efecto) ? $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.efecto : 'No evaluada' }}\n                    </div>\n                  </td>\n                </tr>\n              </table>\n            </div>\n          </td>\n        </tr>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">6. Alertas Clave</div>\n      <div class=\"content-box\">\n        <ul class=\"clean-list\">\n          <li>{{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[0]) ? $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[0] : 'No se registraron alertas clave.' }}</li>\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[1]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[1] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[2]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[2] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[3]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[3] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[4]) ? '<li>' + $json.analisis_json.alertas_clave[4] + '</li>' : '' }}\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">7. Observaciones Específicas</div>\n      <div class=\"content-box\">\n        <ul class=\"clean-list\">\n          <li>{{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[0]) ? $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[0] : 'No se registraron observaciones específicas.' }}</li>\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[1]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[1] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[2]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[2] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[3]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[3] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[4]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[4] + '</li>' : '' }}\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">8. Recomendaciones y Acciones Propuestas</div>\n      <div class=\"content-box\">\n        <ul class=\"clean-list\">\n          <li>{{ $('Code - Preparar Blockchain').item.json.recomendacion || (($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[0]) ? $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[0] : 'No se registró una recomendación principal.') }}</li>\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[1]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[1] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[2]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[2] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[3]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[3] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[4]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[4] + '</li>' : '' }}\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"conclusion-box\">\n        <div class=\"conclusion-head\">9. Conclusión de Triaje</div>\n        <div class=\"conclusion-body\">\n          {{ $('Code - Preparar Blockchain').item.json.analisis_json.conclusion_triaje || 'No se emitió conclusión de triaje.' }}\n        </div>\n      </div>\n    </div>\n\n    <div class=\"footer\">\n      Sistema de Gestión de Informes • Documento de Control Interno Confidencial\n    </div>\n  </div>\n\n  <!-- ===================== TRAZABILIDAD BLOCKCHAIN ===================== -->\n  <div class=\"page\">\n    <div class=\"blockchain-hero\">\n      <div class=\"blockchain-title\">Registro de Trazabilidad Blockchain</div>\n      <div>\n        Certificación de integridad del análisis generado y de los campos principales del informe.\n      </div>\n    </div>\n\n    <div class=\"meta-box\">\n      <div class=\"meta-head\">Resumen del Registro Certificado</div>\n      <table class=\"meta-table\">\n        <tr>\n          <td>\n            <span class=\"meta-label\">ID de Registro</span>\n            <div class=\"meta-value\">{{$('HTTP Request2').item.json.registro.id || 'No generado' }}</div>\n          </td>\n          <td>\n            <span class=\"meta-label\">Estado</span>\n            <div class=\"meta-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_estado || 'No disponible' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"meta-label\">Fecha de Registro</span>\n            <div class=\"meta-value\">{{ $('HTTP Request2').item.json.fecha_registro || 'No disponible' }}</div>\n          </td>\n          <td>\n            <span class=\"meta-label\">Hora de Registro</span>\n            <div class=\"meta-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_hora || 'No disponible' }}</div>\n          </td>\n        </tr>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">1. Hash de Integridad</div>\n      <div class=\"content-box\">\n        <div class=\"hash-box mono\">\n          {{ $json.blockchain.transactionHash || 'No se generó hash de integridad.' }}\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section no-break\">\n      <div class=\"section-title\">2. Campos Considerados en la Certificación</div>\n      <div class=\"content-box\">\n        El registro de certificación considera los principales campos del análisis, entre ellos:\n        identificación del chat, nombre del archivo, tipo de documento, función detectada, entidad evaluada,\n        resumen ejecutivo, condición, criterio, efecto, causa y fecha de análisis.\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">3. Payload Certificado</div>\n      <div class=\"content-box mono\">\n        {{ $('Code - Preparar Blockchain').item.json.blockchain_payload_string || 'No se registró payload blockchain.' }}\n      </div>\n    </div>\n\n    <div class=\"footer\">\n      ZasPe • Certificación de integridad y trazabilidad documental\n    </div>\n  </div>\n\n  <!-- ===================== REDES ===================== -->\n  <div class=\"page last-page contact-page\">\n    <div class=\"contact-header\">\n      <img src=\"https://res.cloudinary.com/ds6edzck9/image/upload/f_auto,q_auto/Recurso_1_2_cc8bra\" alt=\"Logo ZasPe\">\n      <h2 class=\"contact-title\">Redes y Contacto</h2>\n      <div class=\"contact-subtitle\">\n        Espacio para colocar redes, canales de contacto, QR, portafolio o datos institucionales.\n      </div>\n    </div>\n\n    <div class=\"contact-body\">\n      <div class=\"contact-intro\">\n        Esta sección puede utilizarse como cierre del documento para compartir medios de contacto,\n        canales del proyecto, identidad del servicio o enlaces de verificación del registro emitido.\n      </div>\n\n      <table class=\"social-table\">\n        <tr>\n          <td>\n            <span class=\"social-label\">Facebook</span>\n            <div class=\"social-value\">{{ $json.instagram || '@ZasPe Agente' }}</div>\n          </td>\n          <td>\n            <span class=\"social-label\">LinkedIn</span>\n            <div href = \"\" class=\"social-value\">{{ $json.linkedin || 'www.linkedin.com/in/zaspe-agente-18651641a' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"social-label\">Correo</span>\n            <div class=\"social-value\">{{ $json.correo || 'zas.agente@gmail.com' }}</div>\n          </td>\n<td>\n            <span class=\"social-label\">Explorer de Verificacion</span>\n            <div class=\"social-value\">{{ $('HTTP Request2').item.json.blockchain.explorer }}</div>\n          </td>\n      \n        </tr>\n        <tr>\n          <td>\n            <span class=\"social-label\">Código / ID del Informe</span>\n            <div class=\"social-value\">{{ $json.registro.id || 'Sin ID' }}</div>\n          </td>\n          <td>\n            <span class=\"social-label\">Hash de Verificación</span>\n            <div class=\"social-value mono\">{{$json.blockchain.transactionHash || 'Sin hash' }}</div>\n          </td>\n        </tr>\n      </table>\n\n      <div class=\"contact-note\">\n        <strong>Nota:</strong> esta última hoja está pensada para personalizar el PDF final con la identidad del proyecto o del responsable del informe. Aquí también puedes agregar firma digital, QR, código del informe, hash del documento o URL de verificación.\n      </div>\n\n      <div class=\"contact-footer\">\n        ZasPe • Blockchain sin floro, contratos sin corrupción\n      </div>\n    </div>\n  </div>\n\n</body>\n</html>",
+        "output_format": "file",
+        "output_filename": "=Informe_{{ $('mapeo_datos').item.json.funcion }}_.pdf"
+      },
+      "type": "n8n-nodes-htmlcsstopdf.htmlcsstopdf",
+      "typeVersion": 1,
+      "position": [
+        -3072,
+        880
+      ],
+      "id": "bcb60e82-ba15-4453-8d47-7fcc1b44aac7",
+      "name": "Convert HTML to PDF",
+      "credentials": {
+        "htmlcsstopdfApi": {
+          "id": "kCn7ScsgG4OnIGGF",
+          "name": "HTML to PDF account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a4a67ab6-c7c1-458a-b848-c78f5f9f0eaa",
+                    "leftValue": "={{ $('Code - Preparar Blockchain').item.json.analisis_json.tipo_documento }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1f0d6471-51ce-4ee6-bf24-118a88d51a56",
+                    "leftValue": "={{ $('Code - Preparar Blockchain').item.json.analisis_json.tipo_documento }}",
+                    "rightValue": "csv",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "csv"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        976
+      ],
+      "id": "25abd8b1-f286-4894-bc96-a2f96e76081b",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "html_content": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Informe de Evaluación Automática</title>\n  <style>\n    @page {\n      size: A4;\n      margin: 16mm 14mm 16mm 14mm;\n    }\n\n    body {\n      margin: 0;\n      padding: 0;\n      font-family: Arial, Helvetica, sans-serif;\n      font-size: 12px;\n      line-height: 1.5;\n      color: #2b2b2b;\n      background: #ffffff;\n    }\n\n    .page {\n      width: 100%;\n      page-break-after: always;\n    }\n\n    .last-page {\n      page-break-after: auto;\n    }\n\n    .no-break {\n      page-break-inside: avoid;\n    }\n\n    /* ===== PALETA ===== */\n    .bg-primary { background: #8b0d23; }\n    .bg-secondary { background: #5f0d19; }\n    .bg-light { background: #f8f1f3; }\n    .bg-soft { background: #fcf7f8; }\n    .text-white { color: #ffffff; }\n    .text-primary { color: #8b0d23; }\n    .text-dark { color: #2b2b2b; }\n    .border-primary { border-color: #8b0d23; }\n\n    /* ===== TIPOGRAFÍA ===== */\n    h1, h2, h3, h4, p {\n      margin-top: 0;\n    }\n\n    .small {\n      font-size: 11px;\n    }\n\n    .muted {\n      color: #6f5d62;\n    }\n\n    .mono {\n      font-family: \"Courier New\", Courier, monospace;\n      word-break: break-word;\n    }\n\n    /* ===== PORTADA ===== */\n    .cover {\n      padding: 0;\n      border: 1px solid #d9c5ca;\n      min-height: 255mm;\n    }\n\n    .cover-top {\n      background: linear-gradient(135deg, #a20f29 0%, #8b0d23 55%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 28px 28px 22px 28px;\n    }\n\n    .cover-logo {\n      text-align: center;\n      margin-bottom: 18px;\n    }\n\n    .cover-logo img {\n      max-width: 90px;\n      height: auto;\n      display: block;\n      margin: 0 auto 12px auto;\n    }\n\n    .cover-title {\n      text-align: center;\n      font-size: 26px;\n      font-weight: bold;\n      text-transform: uppercase;\n      margin: 10px 0 8px 0;\n      letter-spacing: 0.5px;\n    }\n\n    .cover-subtitle {\n      text-align: center;\n      font-size: 13px;\n      margin: 0;\n      opacity: 0.95;\n    }\n\n    .cover-body {\n      padding: 28px;\n      background: #ffffff;\n    }\n\n    .cover-info-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin-top: 10px;\n    }\n\n    .cover-info-table td {\n      border: 1px solid #e2d2d7;\n      padding: 12px 14px;\n      vertical-align: top;\n      width: 50%;\n    }\n\n    .cover-label {\n      display: block;\n      font-size: 11px;\n      font-weight: bold;\n      color: #8b0d23;\n      text-transform: uppercase;\n      margin-bottom: 5px;\n    }\n\n    .cover-value {\n      font-size: 13px;\n      color: #2b2b2b;\n    }\n\n    .cover-summary {\n      margin-top: 18px;\n      border: 1px solid #e2d2d7;\n      background: #fcf7f8;\n      padding: 16px;\n      text-align: justify;\n    }\n\n    .cover-footer {\n      margin-top: 25px;\n      padding-top: 10px;\n      border-top: 1px solid #e6d9dd;\n      font-size: 11px;\n      color: #6a5b60;\n      text-align: center;\n    }\n\n    /* ===== HEADER ===== */\n    .header {\n      background: linear-gradient(135deg, #a20f29 0%, #8b0d23 55%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 18px 22px;\n      margin-bottom: 18px;\n    }\n\n    .header-table {\n      width: 100%;\n      border-collapse: collapse;\n    }\n\n    .header-table td {\n      vertical-align: middle;\n    }\n\n    .header-logo {\n      width: 70px;\n    }\n\n    .header-logo img {\n      max-width: 35px;\n      height: auto;\n      display: block;\n    }\n\n    .header-title {\n      font-size: 22px;\n      font-weight: bold;\n      text-transform: uppercase;\n      margin: 0;\n    }\n\n    .header-subtitle {\n      font-size: 12px;\n      margin-top: 4px;\n    }\n\n    .header-badge {\n      text-align: right;\n      font-size: 11px;\n      font-weight: bold;\n      text-transform: uppercase;\n    }\n\n    /* ===== CAJAS / TABLAS ===== */\n    .meta-box,\n    .content-box,\n    .conclusion-box,\n    .triada-box,\n    .card-box {\n      border: 1px solid #e2d2d7;\n      background: #ffffff;\n    }\n\n    .meta-box {\n      margin-bottom: 20px;\n    }\n\n    .meta-head,\n    .card-head {\n      background: #f8f1f3;\n      color: #8b0d23;\n      font-weight: bold;\n      text-transform: uppercase;\n      padding: 12px 16px;\n      border-bottom: 1px solid #e2d2d7;\n      font-size: 12px;\n    }\n\n    .meta-table,\n    .info-table,\n    .social-table {\n      width: 100%;\n      border-collapse: collapse;\n    }\n\n    .meta-table td,\n    .info-table td,\n    .social-table td {\n      padding: 14px 16px;\n      border-right: 1px solid #e2d2d7;\n      border-bottom: 1px solid #e2d2d7;\n      vertical-align: top;\n    }\n\n    .meta-table td:last-child,\n    .info-table td:last-child,\n    .social-table td:last-child {\n      border-right: none;\n    }\n\n    .meta-table tr:last-child td,\n    .info-table tr:last-child td,\n    .social-table tr:last-child td {\n      border-bottom: none;\n    }\n\n    .meta-label,\n    .info-label,\n    .social-label {\n      display: block;\n      font-size: 11px;\n      font-weight: bold;\n      text-transform: uppercase;\n      color: #8b0d23;\n      margin-bottom: 6px;\n    }\n\n    .meta-value,\n    .info-value,\n    .social-value {\n      font-size: 13px;\n      color: #2b2b2b;\n    }\n\n    /* ===== SECCIONES ===== */\n    .section {\n      margin-bottom: 20px;\n      page-break-inside: avoid;\n    }\n\n    .section-title {\n      background: #f8f1f3;\n      color: #8b0d23;\n      font-size: 14px;\n      font-weight: bold;\n      text-transform: uppercase;\n      padding: 10px 14px;\n      border-left: 5px solid #8b0d23;\n      margin-bottom: 10px;\n    }\n\n    .content-box {\n      padding: 16px;\n      text-align: justify;\n    }\n\n    /* ===== GRID 2 COLUMNAS ===== */\n    .two-col {\n      width: 100%;\n      border-collapse: separate;\n      border-spacing: 0;\n      margin-bottom: 18px;\n    }\n\n    .two-col td {\n      width: 50%;\n      vertical-align: top;\n      padding: 0 6px 0 0;\n    }\n\n    .two-col td:last-child {\n      padding: 0 0 0 6px;\n    }\n\n    /* ===== BADGES ===== */\n    .pill {\n      display: inline-block;\n      padding: 4px 10px;\n      border-radius: 999px;\n      font-size: 11px;\n      font-weight: bold;\n      text-transform: uppercase;\n      background: #f3e4e8;\n      color: #8b0d23;\n      border: 1px solid #dfc4cb;\n      margin-right: 6px;\n      margin-bottom: 6px;\n    }\n\n    /* ===== TRIADA ===== */\n    .triada-box {\n      margin-bottom: 12px;\n      page-break-inside: avoid;\n    }\n\n    .triada-head {\n      color: #ffffff;\n      font-weight: bold;\n      text-transform: uppercase;\n      padding: 10px 14px;\n      font-size: 12px;\n    }\n\n    .triada-condicion {\n      background: #a20f29;\n    }\n\n    .triada-criterio {\n      background: #5f0d19;\n    }\n\n    .triada-efecto {\n      background: #c3203c;\n    }\n\n    .triada-causa {\n      background: #7f1d2d;\n    }\n\n    .triada-body {\n      padding: 14px;\n      background: #ffffff;\n      text-align: justify;\n      border-top: 1px solid #e2d2d7;\n    }\n\n    /* ===== LISTAS ===== */\n    ul.clean-list {\n      margin: 0;\n      padding-left: 18px;\n    }\n\n    ul.clean-list li {\n      margin-bottom: 8px;\n      text-align: justify;\n    }\n\n    /* ===== CONCLUSIÓN ===== */\n    .conclusion-head {\n      background: linear-gradient(135deg, #8b0d23 0%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 12px 16px;\n      font-size: 15px;\n      font-weight: bold;\n      text-transform: uppercase;\n    }\n\n    .conclusion-body {\n      padding: 16px;\n      font-size: 14px;\n      font-weight: bold;\n      color: #5f0d19;\n      text-align: justify;\n    }\n\n    /* ===== FOOTER ===== */\n    .footer {\n      margin-top: 28px;\n      padding-top: 12px;\n      border-top: 1px solid #e2d2d7;\n      text-align: center;\n      font-size: 11px;\n      color: #7b6b70;\n    }\n\n    /* ===== BLOCKCHAIN ===== */\n    .blockchain-hero {\n      background: linear-gradient(135deg, #5f0d19 0%, #8b0d23 60%, #a20f29 100%);\n      color: #ffffff;\n      padding: 22px;\n      margin-bottom: 18px;\n    }\n\n    .blockchain-title {\n      font-size: 22px;\n      font-weight: bold;\n      text-transform: uppercase;\n      margin-bottom: 6px;\n    }\n\n    .hash-box {\n      border: 1px solid #e2d2d7;\n      background: #fcf7f8;\n      padding: 14px;\n      margin-top: 12px;\n    }\n\n    /* ===== REDES ===== */\n    .contact-page {\n      border: 1px solid #e2d2d7;\n      background: #ffffff;\n      min-height: 255mm;\n    }\n\n    .contact-header {\n      background: linear-gradient(135deg, #a20f29 0%, #8b0d23 55%, #5f0d19 100%);\n      color: #ffffff;\n      padding: 24px;\n      text-align: center;\n    }\n\n    .contact-header img {\n      max-width: 90px;\n      height: auto;\n      display: block;\n      margin: 0 auto 12px auto;\n    }\n\n    .contact-title {\n      margin: 0;\n      font-size: 24px;\n      font-weight: bold;\n      text-transform: uppercase;\n    }\n\n    .contact-subtitle {\n      margin-top: 8px;\n      font-size: 12px;\n    }\n\n    .contact-body {\n      padding: 24px;\n    }\n\n    .contact-intro {\n      margin-bottom: 18px;\n      text-align: justify;\n      color: #403437;\n    }\n\n    .contact-note {\n      margin-top: 18px;\n      background: #f8f1f3;\n      border-left: 5px solid #8b0d23;\n      padding: 14px;\n      color: #403437;\n      text-align: justify;\n    }\n\n    .contact-footer {\n      margin-top: 22px;\n      padding-top: 12px;\n      border-top: 1px solid #e2d2d7;\n      text-align: center;\n      font-size: 11px;\n      color: #7b6b70;\n    }\n  </style>\n</head>\n<body>\n\n  <!-- ===================== PORTADA ===================== -->\n  <div class=\"page cover\">\n    <div class=\"cover-top\">\n      <div class=\"cover-logo\">\n        <img src=\"https://res.cloudinary.com/ds6edzck9/image/upload/f_auto,q_auto/Recurso_1_2_cc8bra\" alt=\"Logo ZasPe\">\n      </div>\n      <div class=\"cover-title\">Informe de Evaluación Automática</div>\n      <p class=\"cover-subtitle\">\n        Reporte automatizado de clasificación, consistencia, observaciones, triaje y trazabilidad del análisis\n      </p>\n    </div>\n\n    <div class=\"cover-body\">\n      <table class=\"cover-info-table\">\n        <tr>\n          <td>\n            <span class=\"cover-label\">Entidad / Contexto</span>\n            <div class=\"cover-value\">{{$('Code - Preparar Blockchain').item.json.entidad_contexto || 'No consignado' }}</div>\n          </td>\n          <td>\n            <span class=\"cover-label\">Función Detectada</span>\n            <div class=\"cover-value\">{{$('Code - Preparar Blockchain').item.json.funcion_detectada || 'No identificada' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"cover-label\">Tipo de Documento</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.tipo_documento || 'No consignado' }}</div>\n          </td>\n          <td>\n            <span class=\"cover-label\">Asunto</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.asunto || 'Informe generado automáticamente' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"cover-label\">Fecha del Informe</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_fecha || $now.format('yyyy-MM-dd') }}</div>\n          </td>\n          <td>\n            <span class=\"cover-label\">Hora de Generación</span>\n            <div class=\"cover-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_hora || $now.format('HH:mm:ss') }}</div>\n          </td>\n        </tr>\n      </table>\n\n      \n\n      <div class=\"cover-footer\">\n        Sistema de Gestión de Informes • Documento de Control Interno Confidencial\n      </div>\n    </div>\n  </div>\n\n  <!-- ===================== INFORME PRINCIPAL ===================== -->\n  <div class=\"page\">\n    <div class=\"header\">\n      <table class=\"header-table\">\n        <tr>\n          <td class=\"header-logo\">\n            <img src=\"https://res.cloudinary.com/ds6edzck9/image/upload/v1782430826/Recurso_2_2_zuobhe.png\" alt=\"Logo ZasPe\">\n          </td>\n          <td>\n            <div class=\"header-title\">Informe de Evaluación Automática</div>\n            <div class=\"header-subtitle\">Análisis automatizado de clasificación, hallazgo, observaciones y triaje</div>\n          </td>\n          <td class=\"header-badge\">\n            CONFIDENCIAL\n          </td>\n        </tr>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">1. Motivo de Clasificación / Resumen</div>\n      <div class=\"content-box\">\n        {{ $('Code - Preparar Blockchain').item.json.motivo_clasificacion || 'No se registró motivo de clasificación.' }}\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">2. Resumen Ejecutivo</div>\n      <div class=\"content-box\">\n        {{ $('Code - Preparar Blockchain').item.json.resumen_ejecutivo || 'No se generó un resumen ejecutivo para este caso.' }}\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">3. Análisis de la Tríada del Hallazgo</div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-condicion\">Condición</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_condicion || 'No consignado.' }}\n        </div>\n      </div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-criterio\">Criterio</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_criterio || 'No consignado.' }}\n        </div>\n      </div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-efecto\">Efecto</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_efecto || 'No consignado.' }}\n        </div>\n      </div>\n\n      <div class=\"triada-box\">\n        <div class=\"triada-head triada-causa\">Causa / Factor asociado</div>\n        <div class=\"triada-body\">\n          {{ $('Code - Preparar Blockchain').item.json.hallazgo_causa || 'No consignado por el modelo.' }}\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">4. Auditoría de Lenguaje y Observaciones</div>\n      <div class=\"content-box\">\n        {{ $('Code - Preparar Blockchain').item.json.analisis_json.auditoria_observaciones || $json.auditoria_observaciones || 'No se registraron observaciones de auditoría.' }}\n      </div>\n    </div>\n\n    <div class=\"section no-break\">\n      <div class=\"section-title\">5. Evaluación Complementaria</div>\n\n      <table class=\"two-col\">\n        <tr>\n          <td>\n            <div class=\"card-box\">\n              <div class=\"card-head\">Riesgo y Prioridad</div>\n              <table class=\"info-table\">\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Riesgo Global</span>\n                    <div class=\"info-value\">{{ $('Code - Preparar Blockchain').item.json.analisis_json.riesgo_global || 'No determinado' }}</div>\n                  </td>\n                </tr>\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Nivel / Prioridad</span>\n                    <div class=\"info-value\">{{ $('Code - Preparar Blockchain').item.json.analisis_json.nivel_prioridad || 'No determinado' }}</div>\n                  </td>\n                </tr>\n              </table>\n            </div>\n          </td>\n\n          <td>\n            <div class=\"card-box\">\n              <div class=\"card-head\">Evaluación de la Tríada</div>\n              <table class=\"info-table\">\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Condición</span>\n                    <div class=\"info-value\">\n                      {{ ($('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada && $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.condicion) ? $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.condicion : 'No evaluada' }}\n                    </div>\n                  </td>\n                </tr>\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Criterio</span>\n                    <div class=\"info-value\">\n                      {{ ($('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada && $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.criterio) ? $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.criterio : 'No evaluada' }}\n                    </div>\n                  </td>\n                </tr>\n                <tr>\n                  <td>\n                    <span class=\"info-label\">Efecto</span>\n                    <div class=\"info-value\">\n                      {{ ($('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada && $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.efecto) ? $('Code - Preparar Blockchain').item.json.analisis_json.evaluacion_triada.efecto : 'No evaluada' }}\n                    </div>\n                  </td>\n                </tr>\n              </table>\n            </div>\n          </td>\n        </tr>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">6. Alertas Clave</div>\n      <div class=\"content-box\">\n        <ul class=\"clean-list\">\n          <li>{{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[0]) ? $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[0] : 'No se registraron alertas clave.' }}</li>\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[1]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[1] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[2]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[2] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[3]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[3] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave && $('Code - Preparar Blockchain').item.json.analisis_json.alertas_clave[4]) ? '<li>' + $json.analisis_json.alertas_clave[4] + '</li>' : '' }}\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">7. Observaciones Específicas</div>\n      <div class=\"content-box\">\n        <ul class=\"clean-list\">\n          <li>{{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[0]) ? $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[0] : 'No se registraron observaciones específicas.' }}</li>\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[1]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[1] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[2]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[2] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[3]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[3] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas && $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[4]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.observaciones_especificas[4] + '</li>' : '' }}\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">8. Recomendaciones y Acciones Propuestas</div>\n      <div class=\"content-box\">\n        <ul class=\"clean-list\">\n          <li>{{ $('Code - Preparar Blockchain').item.json.recomendacion || (($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[0]) ? $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[0] : 'No se registró una recomendación principal.') }}</li>\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[1]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[1] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[2]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[2] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[3]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[3] + '</li>' : '' }}\n          {{ ($('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas && $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[4]) ? '<li>' + $('Code - Preparar Blockchain').item.json.analisis_json.acciones_recomendadas[4] + '</li>' : '' }}\n        </ul>\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"conclusion-box\">\n        <div class=\"conclusion-head\">9. Conclusión de Triaje</div>\n        <div class=\"conclusion-body\">\n          {{ $('Code - Preparar Blockchain').item.json.analisis_json.conclusion_triaje || 'No se emitió conclusión de triaje.' }}\n        </div>\n      </div>\n    </div>\n\n    <div class=\"footer\">\n      Sistema de Gestión de Informes • Documento de Control Interno Confidencial\n    </div>\n  </div>\n\n  <!-- ===================== TRAZABILIDAD BLOCKCHAIN ===================== -->\n  <div class=\"page\">\n    <div class=\"blockchain-hero\">\n      <div class=\"blockchain-title\">Registro de Trazabilidad Blockchain</div>\n      <div>\n        Certificación de integridad del análisis generado y de los campos principales del informe.\n      </div>\n    </div>\n\n    <div class=\"meta-box\">\n      <div class=\"meta-head\">Resumen del Registro Certificado</div>\n      <table class=\"meta-table\">\n        <tr>\n          <td>\n            <span class=\"meta-label\">ID de Registro</span>\n            <div class=\"meta-value\">{{$('HTTP Request2').item.json.registro.id || 'No generado' }}</div>\n          </td>\n          <td>\n            <span class=\"meta-label\">Estado</span>\n            <div class=\"meta-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_estado || 'No disponible' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"meta-label\">Fecha de Registro</span>\n            <div class=\"meta-value\">{{ $('HTTP Request2').item.json.fecha_registro || 'No disponible' }}</div>\n          </td>\n          <td>\n            <span class=\"meta-label\">Hora de Registro</span>\n            <div class=\"meta-value\">{{ $('Code - Preparar Blockchain').item.json.blockchain_hora || 'No disponible' }}</div>\n          </td>\n        </tr>\n      </table>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">1. Hash de Integridad</div>\n      <div class=\"content-box\">\n        <div class=\"hash-box mono\">\n          {{ $('HTTP Request2').item.json.registro.hash || 'No se generó hash de integridad.' }}\n        </div>\n      </div>\n    </div>\n\n    <div class=\"section no-break\">\n      <div class=\"section-title\">2. Campos Considerados en la Certificación</div>\n      <div class=\"content-box\">\n        El registro de certificación considera los principales campos del análisis, entre ellos:\n        identificación del chat, nombre del archivo, tipo de documento, función detectada, entidad evaluada,\n        resumen ejecutivo, condición, criterio, efecto, causa y fecha de análisis.\n      </div>\n    </div>\n\n    <div class=\"section\">\n      <div class=\"section-title\">3. Payload Certificado</div>\n      <div class=\"content-box mono\">\n        {{ $('Code - Preparar Blockchain').item.json.blockchain_payload_string || 'No se registró payload blockchain.' }}\n      </div>\n    </div>\n\n    <div class=\"footer\">\n      ZasPe • Certificación de integridad y trazabilidad documental\n    </div>\n  </div>\n\n  <!-- ===================== REDES ===================== -->\n  <div class=\"page last-page contact-page\">\n    <div class=\"contact-header\">\n      <img src=\"https://res.cloudinary.com/ds6edzck9/image/upload/f_auto,q_auto/Recurso_1_2_cc8bra\" alt=\"Logo ZasPe\">\n      <h2 class=\"contact-title\">Redes y Contacto</h2>\n      <div class=\"contact-subtitle\">\n        Espacio para colocar redes, canales de contacto, QR, portafolio o datos institucionales.\n      </div>\n    </div>\n\n    <div class=\"contact-body\">\n      <div class=\"contact-intro\">\n        Esta sección puede utilizarse como cierre del documento para compartir medios de contacto,\n        canales del proyecto, identidad del servicio o enlaces de verificación del registro emitido.\n      </div>\n\n      <table class=\"social-table\">\n        <tr>\n          <td>\n            <span class=\"social-label\">Instagram</span>\n            <div class=\"social-value\">{{ $json.instagram || '@tuusuario' }}</div>\n          </td>\n          <td>\n            <span class=\"social-label\">LinkedIn</span>\n            <div class=\"social-value\">{{ $json.linkedin || 'linkedin.com/in/tuusuario' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"social-label\">Correo</span>\n            <div class=\"social-value\">{{ $json.correo || 'tucorreo@dominio.com' }}</div>\n          </td>\n          <td>\n            <span class=\"social-label\">Sitio Web / Portafolio</span>\n            <div class=\"social-value\">{{ $json.web || 'www.tusitio.com' }}</div>\n          </td>\n        </tr>\n        <tr>\n          <td>\n            <span class=\"social-label\">Código / ID del Informe</span>\n            <div class=\"social-value\">{{ $json.blockchain_registro_id || 'Sin ID' }}</div>\n          </td>\n          <td>\n            <span class=\"social-label\">Hash de Verificación</span>\n            <div class=\"social-value mono\">{{ $json.blockchain_hash || 'Sin hash' }}</div>\n          </td>\n        </tr>\n      </table>\n\n      <div class=\"contact-note\">\n        <strong>Nota:</strong> esta última hoja está pensada para personalizar el PDF final con la identidad del proyecto o del responsable del informe. Aquí también puedes agregar firma digital, QR, código del informe, hash del documento o URL de verificación.\n      </div>\n\n      <div class=\"contact-footer\">\n        ZasPe • Blockchain sin floro, contratos sin corrupción\n      </div>\n    </div>\n  </div>\n\n</body>\n</html>",
+        "output_format": "file",
+        "output_filename": "=Informe_ {{ $json.asunto }}.pdf"
+      },
+      "type": "n8n-nodes-htmlcsstopdf.htmlcsstopdf",
+      "typeVersion": 1,
+      "position": [
+        -3072,
+        1056
+      ],
+      "id": "a68b208e-d973-45a4-b6ab-22dc115b0d11",
+      "name": "Convert HTML to PDF1",
+      "credentials": {
+        "htmlcsstopdfApi": {
+          "id": "kCn7ScsgG4OnIGGF",
+          "name": "HTML to PDF account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $('Telegram Trigger').item.json.callback_query.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2816,
+        976
+      ],
+      "id": "adbf81d5-5165-4c1a-98cd-30c3fb429951",
+      "name": "Send a document",
+      "webhookId": "f54bff4b-b9f8-4b1f-93be-01d00e1e193f",
+      "credentials": {
+        "telegramApi": {
+          "id": "MjQufvgGvprLYwny",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0b7f365c-22e4-4520-b1c1-43c51e1b5bca",
+              "name": "mensaje",
+              "value": "={{ $json.contenido_documento }}",
+              "type": "string"
+            },
+            {
+              "id": "0a586280-3c59-4c26-b823-4b09821787ea",
+              "name": "chat_id",
+              "value": "8533461126",
+              "type": "string"
+            },
+            {
+              "id": "7ac16295-7836-4b51-8525-4f4d0477413f",
+              "name": "file_name",
+              "value": "={{ $json.file_name }}",
+              "type": "string"
+            },
+            {
+              "id": "e4f18f57-3c1d-49bb-b291-559f9960e3c1",
+              "name": "funcion",
+              "value": "={{ $json.funcion_elegida }}",
+              "type": "string"
+            },
+            {
+              "id": "94d80c05-70f2-4ec3-8548-c7f243676704",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2912,
+        592
+      ],
+      "id": "d427ca88-dc9d-4dee-95d9-8373ceefbdee",
+      "name": "mapeo_datos"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = items.map(item => item.json);\n\n// Si no hay filas\nif (!rows.length) {\n  return [{\n    json: {\n      ok: false,\n      error: 'El CSV no contiene filas',\n    }\n  }];\n}\n\n// --- 1) Lista de palabras clave para detectar columnas útiles ---\nconst keywords = [\n  'entidad',\n  'documento',\n  'informe',\n  'hallazgo',\n  'observacion',\n  'observación',\n  'descripcion',\n  'descripción',\n  'criterio',\n  'causa',\n  'efecto',\n  'recomendacion',\n  'recomendación',\n  'riesgo',\n  'estado',\n  'fecha',\n  'periodo',\n  'período',\n  'monto',\n  'importe',\n  'area',\n  'área',\n  'unidad',\n  'dependencia',\n  'oficina',\n  'responsable'\n];\n\n// --- 2) Obtener todas las columnas del CSV ---\nconst allColumns = [...new Set(rows.flatMap(row => Object.keys(row)))];\n\n// --- 3) Detectar columnas relevantes por coincidencia de nombre ---\nlet selectedColumns = allColumns.filter(col => {\n  const c = col.toLowerCase().trim();\n  return keywords.some(k => c.includes(k));\n});\n\n// Si no detecta nada, nos quedamos con las primeras 8 columnas para no romper el flujo\nif (!selectedColumns.length) {\n  selectedColumns = allColumns.slice(0, 8);\n}\n\n// --- 4) Limitar filas para no reventar tokens ---\nconst MAX_ROWS = 30;\nconst limitedRows = rows.slice(0, MAX_ROWS);\n\n// --- 5) Reducir cada fila solo a las columnas seleccionadas ---\nconst reducedRows = limitedRows.map(row => {\n  const obj = {};\n  for (const col of selectedColumns) {\n    obj[col] = row[col] ?? '';\n  }\n  return obj;\n});\n\n// --- 6) Construir un resumen legible para el agente ---\nconst resumenFilas = reducedRows.map((row, index) => {\n  const partes = Object.entries(row)\n    .filter(([_, value]) => value !== null && value !== undefined && String(value).trim() !== '')\n    .map(([key, value]) => `${key}: ${String(value).trim()}`);\n  \n  return `Fila ${index + 1}: ${partes.join(' | ')}`;\n}).join('\\n');\n\n// --- 7) Texto final que se mandará al agente ---\nconst contenidoDocumento = `\nResumen estructurado de archivo CSV\nFilas totales del archivo: ${rows.length}\nFilas analizadas: ${limitedRows.length}\nColumnas detectadas en el archivo: ${allColumns.join(', ')}\nColumnas seleccionadas para el análisis: ${selectedColumns.join(', ')}\n\nContenido resumido:\n${resumenFilas}\n`.trim();\n\n// --- 8) Devolver un solo item para seguir al agente ---\nreturn [{\n  json: {\n    ok: true,\n    tipo_documento: 'csv',\n    filas_totales: rows.length,\n    filas_analizadas: limitedRows.length,\n    columnas_totales: allColumns,\n    columnas_usadas: selectedColumns,\n    contenido_documento: contenidoDocumento\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3360,
+        688
+      ],
+      "id": "70c9d505-5f33-4c43-96fb-dccbda96bca9",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -3968,
+        624
+      ],
+      "id": "8184dcf6-0b6f-4ed7-a390-14cda5a25ee5",
+      "name": "Get a file1",
+      "webhookId": "2766f517-3bae-4211-a348-79ac8ed0e2e4",
+      "credentials": {
+        "telegramApi": {
+          "id": "MjQufvgGvprLYwny",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      chat_id: $json.chat_id,\n      file_id: $json.file_id,\n      file_name: $json.file_name,\n      file_extension: $json.file_extension,\n      funcion_elegida: $json.funcion_elegida\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4144,
+        624
+      ],
+      "id": "651cdd8b-982d-4713-8766-51793156a75d",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===============================\n// 1) TRAER DATOS DEL FLUJO\n// ===============================\nconst entrada = $('mapeo_datos').first().json;\n\n// ===============================\n// 2) TRAER RESPUESTA DEL MODELO\n// ===============================\nconst modelo = $('Message a model').first().json;\n\n// ===============================\n// 3) EXTRAER EL TEXTO DEL JSON DEL MODELO\n// Tu caso real:\n// modelo.output[0].content[0].text\n// ===============================\nlet rawText = '';\n\n// Caso principal de tu estructura actual\nif (\n  Array.isArray(modelo.output) &&\n  modelo.output[0] &&\n  Array.isArray(modelo.output[0].content) &&\n  modelo.output[0].content[0] &&\n  typeof modelo.output[0].content[0].text === 'string'\n) {\n  rawText = modelo.output[0].content[0].text;\n}\n\n// Caso alternativo: content en raíz\nelse if (\n  Array.isArray(modelo.content) &&\n  modelo.content[0] &&\n  typeof modelo.content[0].text === 'string'\n) {\n  rawText = modelo.content[0].text;\n}\n\n// Caso alternativo: output string\nelse if (typeof modelo.output === 'string') {\n  rawText = modelo.output;\n}\n\n// Caso alternativo: text string\nelse if (typeof modelo.text === 'string') {\n  rawText = modelo.text;\n}\n\n// Si no se encontró texto\nif (!rawText || typeof rawText !== 'string') {\n  return [\n    {\n      json: {\n        ok: false,\n        error: 'No se encontró texto válido en la salida del modelo',\n        modelo\n      }\n    }\n  ];\n}\n\n// ===============================\n// 4) LIMPIAR BLOQUE ```json ... ```\n// ===============================\nconst cleanedText = rawText\n  .replace(/^```json\\s*/i, '')\n  .replace(/^```\\s*/i, '')\n  .replace(/\\s*```$/i, '')\n  .trim();\n\n// ===============================\n// 5) PARSEAR JSON\n// ===============================\nlet analisis;\ntry {\n  analisis = JSON.parse(cleanedText);\n} catch (e) {\n  return [\n    {\n      json: {\n        ok: false,\n        error: 'La salida del modelo no es JSON válido',\n        raw: cleanedText,\n        detalle: e.message\n      }\n    }\n  ];\n}\n\n// ===============================\n// 6) UNIR DATOS DE ENTRADA + IA\n// ===============================\nreturn [\n  {\n    json: {\n      ok: true,\n\n      // Datos originales del flujo\n      chat_id: entrada.chat_id || null,\n      nombre: entrada.nombre || '',\n      asunto: entrada.asunto || analisis.funcion_detectada || 'Informe generado',\n      mensaje: entrada.mensaje || '',\n      tipo_documento: entrada.tipo_documento || analisis.tipo_documento || '',\n\n      // Datos devueltos por la IA\n      entidad_contexto: analisis.entidad_contexto || '',\n      funcion_detectada: analisis.funcion_detectada || '',\n      motivo_clasificacion: analisis.motivo_clasificacion || '',\n      hallazgo_condicion: analisis.hallazgo_condicion || '',\n      hallazgo_criterio: analisis.hallazgo_criterio || '',\n      hallazgo_efecto: analisis.hallazgo_efecto || '',\n      hallazgo_causa: analisis.hallazgo_causa || '',\n      recomendacion: analisis.recomendacion || '',\n      resumen_ejecutivo: analisis.resumen_ejecutivo || '',\n\n      // Por si luego quieres reutilizar el JSON completo\n      analisis_json: analisis\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3776,
+        976
+      ],
+      "id": "029b4a77-0b46-4065-96f8-72dd9796536f",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst item = items[0].json;\n\n// Fecha actual\nconst now = new Date();\nconst pad = (n) => String(n).padStart(2, '0');\n\nconst fecha = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;\nconst hora = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;\n\n// Registro base que vas a certificar\nconst registro = {\n  chat_id: item.chat_id || '',\n  nombre_archivo: item.file_name || '',\n  tipo_documento: item.tipo_documento || '',\n  funcion_elegida: item.funcion_elegida || '',\n  entidad_contexto: item.entidad_contexto || '',\n  hallazgo_condicion: item.hallazgo_condicion || '',\n  hallazgo_criterio: item.hallazgo_criterio || '',\n  hallazgo_efecto: item.hallazgo_efecto || '',\n  hallazgo_causa: item.hallazgo_causa || '',\n  recomendacion: item.recomendacion || '',\n  resumen_ejecutivo: item.resumen_ejecutivo || '',\n  fecha_analisis: now.toISOString()\n};\n\n// Convertimos a string estable\nconst registroString = JSON.stringify(registro);\n\n// Hash SHA-256\nconst hash = crypto.createHash('sha256').update(registroString).digest('hex');\n\n// ID del registro blockchain\nconst row = item.row_number || Math.floor(Math.random() * 10000);\nconst blockchain_registro_id = `REG-${fecha.replace(/-/g, '')}-${row}`;\n\nreturn [\n  {\n    json: {\n      ...item,\n\n      blockchain_payload: registro,\n      blockchain_payload_string: registroString,\n      blockchain_hash: hash,\n\n      blockchain_registro_id,\n      blockchain_fecha: fecha,\n      blockchain_hora: hora,\n      blockchain_estado: 'registrado'\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3616,
+        976
+      ],
+      "id": "9ba91f74-6a84-470a-b3e5-41fc4521e98c",
+      "name": "Code - Preparar Blockchain"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://zaspe-blockchain-api.vercel.app/api/registrar",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"blockchain_hash\": \"{{$json.blockchain_hash}}\",\n  \"blockchain_registro_id\": \"{{$json.blockchain_registro_id}}\",\n  \"entidad_contexto\": \"{{$json.entidad_contexto}}\",\n  \"funcion_detectada\": \"{{$json.funcion_detectada}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -3408,
+        976
+      ],
+      "id": "f48c385d-497c-4109-aa45-a8fffcbf7b51",
+      "name": "HTTP Request2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variable_contendio_csv": {
+      "main": [
+        [
+          {
+            "node": "mapeo_datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variable_contendio_pdf": {
+      "main": [
+        [
+          {
+            "node": "mapeo_datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code - limpiar OCR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - limpiar OCR": {
+      "main": [
+        [
+          {
+            "node": "variable_contendio_pdf",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert HTML to PDF": {
+      "main": [
+        [
+          {
+            "node": "Send a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Convert HTML to PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Convert HTML to PDF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert HTML to PDF1": {
+      "main": [
+        [
+          {
+            "node": "Send a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mapeo_datos": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "variable_contendio_csv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Code - Preparar Blockchain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Preparar Blockchain": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a document": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "452f4be4-e9a6-40d3-8068-72068dd24f75",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6652e65d3f5e8ca7e6aa135cfde4a3a69cffe1876d903179a18ed616c704b5f7"
+  },
+  "nodeGroups": [],
+  "id": "SVmlcMllhdICq9SZ",
+  "tags": []
+}
