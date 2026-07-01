@@ -1,0 +1,122 @@
+const { ethers } = require("ethers");
+
+module.exports = async (req, res) => {
+
+    // Solo permitir POST
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            ok: false,
+            error: "Método no permitido. Utilice POST."
+        });
+    }
+
+    try {
+
+        // Validar variables de entorno
+        if (
+          !process.env.RPC ||
+          !process.env.PRIVATE_KEY ||
+          !process.env.CONTRACT_ADDRESS
+        ) {
+          return res.status(500).json({
+            ok: false,
+            error: "Variables de entorno no configuradas.",
+          });
+        }
+
+        const provider = new ethers.JsonRpcProvider(process.env.RPC);
+
+        const wallet = new ethers.Wallet(
+            process.env.PRIVATE_KEY,
+            provider
+        );
+
+        const {
+            blockchain_hash,
+            blockchain_registro_id,
+            entidad_contexto,
+            funcion_detectada
+        } = req.body;
+
+        // Validar hash
+        if (!blockchain_hash) {
+            return res.status(400).json({
+                ok: false,
+                error: "No se recibió blockchain_hash."
+            });
+        }
+
+        // Limpiar hash
+        const hash = blockchain_hash.replace(/^0x/, "");
+        //prueba
+        const balance = await provider.getBalance(wallet.address);
+
+        console.log({
+            wallet: wallet.address,
+            balance: ethers.formatEther(balance)
+        });
+        //
+
+        // Registrar hash en blockchain
+        const abi = [
+            "function registrarInforme(string registroId, bytes32 hash, string entidad, string funcion)"
+        ];
+
+        const contract = new ethers.Contract(
+            process.env.CONTRACT_ADDRESS,
+            abi,
+            wallet
+        );
+
+        const tx = await contract.registrarInforme(
+            blockchain_registro_id,
+            "0x" + hash,
+            entidad_contexto,
+            funcion_detectada
+        );
+        // Esperar confirmación
+        const receipt = await tx.wait();
+
+        return res.status(200).json({
+          ok: true,
+
+          mensaje: "Registro certificado correctamente.",
+
+          blockchain: {
+            network: "Syscoin zkSYS Testnet",
+            contractAddress: process.env.CONTRACT_ADDRESS,
+            blockNumber: receipt.blockNumber,
+            transactionHash: tx.hash,
+            explorer: process.env.EXPLORER + tx.hash,
+            status: receipt.status,
+          },
+
+          registro: {
+            id: blockchain_registro_id,
+            entidad: entidad_contexto,
+            funcion: funcion_detectada,
+            hash: blockchain_hash,
+          },
+
+          fecha_registro: new Date().toISOString(),
+        });
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+
+            ok: false,
+
+            error: error.message,
+
+            detalle: "No fue posible registrar el informe en la blockchain."
+
+        });
+
+    }
+
+};
+
