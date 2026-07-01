@@ -40,22 +40,19 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 ## 📂 Arquitectura del Monorepo
 
 ```tree
-[NombreRaiz_De_Tu_Proyecto]/
-├── [modulo_principal_1]/      # [Breve descripción general, ej. blockchain, backend, hardware]
-│   ├── [subcarpeta_1.1]/      # [Descripción de lo que contiene, ej. contratos, esquemas]
-│   ├── [subcarpeta_1.2]/      # [Descripción, ej. scripts de despliegue]
-│   └── [subcarpeta_1.3]/      # [Descripción, ej. pruebas unitarias]
-│
-├── [modulo_principal_2]/      # [Breve descripción general, ej. frontend, agentes de IA, app móvil]
-│   ├── [subcarpeta_2.1]/      # [Descripción]
-│   ├── [subcarpeta_2.2]/      # [Descripción]
-│   └── [subcarpeta_2.3]/      # [Descripción]
-│
-├── shared/                    # Recursos, ABIs, tipos o configuraciones compartidas
-│   ├── [subcarpeta_3.1]/      # [Descripción]
-│   └── [subcarpeta_3.2]/      # [Descripción]
-│
-└── docs/                      # Documentación general y guías del proyecto
-    ├── architecture/          # Diagramas, especificaciones técnicas y especificaciones
-    ├── sprints/               # Planificación, hitos o bitácoras de desarrollo
-    └── security/              # Modelos de amenazas, auditorías o guías de despliegue seguro
+📦 zaspe-blockchain-api
+    ├── api/
+    │    registrar.js
+    ├── package.json
+    ├── vercel.json
+    ├── README.md
+    ├── LICENSE
+    └── .gitignore
+
+📦 zaspe-agent
+    ├── workflow.json
+    ├── prompts/
+    ├── docs/
+    ├── README.md
+    ├── LICENSE
+    └── .gitignore
