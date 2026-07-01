@@ -18,7 +18,7 @@ ZasPe es un agente inteligente diseñado para automatizar el análisis de inform
 | :--- | :--- |
 | 🎥 YouTube | https://www.youtube.com/@ZasPeAgente
 | 🐦 X / Twitter | https://x.com/ZasPeAgente
-| 📘 Facebook | [ZasPe Agente]([https://www.facebook.com/profile.php?id=61591502612604]) |
+| 📘 Facebook | ([https://www.facebook.com/profile.php?id=61591502612604]) |
 | 💼 LinkedIn | https://www.linkedin.com/in/zaspe-agente-18651641a/
 
 ## 💻 Stack
